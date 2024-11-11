@@ -1,4 +1,4 @@
-# BinSync
+# TrashTalk
 
 ## Project Overview
 ### Uses Firebase, React Native, Arduino IDE
