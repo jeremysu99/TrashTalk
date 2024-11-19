@@ -17,6 +17,8 @@ const Signup = () => {
             // Signed in
             const user = userCredential.user;
             console.log(user);
+            setMessage(`User created: ${user.email}`);
+
             navigate("/login")
         })
         .catch((error) => {
