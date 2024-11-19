@@ -8,6 +8,7 @@ const Signup = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('');
+    const[message,setMessage]=useState('')
 
     const onSubmit = async (e) => {
       e.preventDefault()
@@ -17,8 +18,7 @@ const Signup = () => {
             // Signed in
             const user = userCredential.user;
             console.log(user);
-            setMessage(`User created: ${user.email}`);
-
+            setMessage(`User created: ${email}`);
             navigate("/login")
         })
         .catch((error) => {
@@ -26,6 +26,7 @@ const Signup = () => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
+            setMessage(errorMessage);
         });
 
 
@@ -74,6 +75,7 @@ const Signup = () => {
                         </button>
 
                     </form>
+                    {message && <p>{message}</p>}
 
                     <p>
                         Already have an account?{' '}
