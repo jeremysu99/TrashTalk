@@ -1,6 +1,6 @@
 // JoinHousehold.js
 import React, { useState } from "react";
-import { auth, db } from "../firebase";
+import { auth, database } from "../firebase";
 import { ref, get, child } from "firebase/database";
 
 const JoinHousehold = () => {
@@ -8,7 +8,7 @@ const JoinHousehold = () => {
   const [statusMessage, setStatusMessage] = useState("");
 
   const joinHousehold = () => {
-    const dbRef = ref(db);
+    const dbRef = ref(database);
 
     // Check if invite code exists in Firebase
     get(child(dbRef, `households/${inviteCode}`))

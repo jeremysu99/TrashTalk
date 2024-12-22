@@ -3,27 +3,30 @@ import {  signInWithEmailAndPassword   } from 'firebase/auth';
 import { auth } from '../firebase';
 import { NavLink, useNavigate } from 'react-router-dom'
 
+
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const[message,setMessage]=useState('')
 
-    const onLogin = (e) => {
+    const onLogin = async (e) => {
         e.preventDefault();
-        signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        try{
+            const userCredential = await signInWithEmailAndPassword(auth, email, password)
             // Signed in
             const user = userCredential.user;
-            navigate("/dashboard")
+            const userID = user.uid;
+            // To keep track of what user is making the actions, we pass the id through the state
+            navigate("/household", { state: { userID: userID }});
             console.log(user);
-        })
-        .catch((error) => {
+        }
+        catch(error){
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage)
             setMessage(errorMessage);
-        });
+        }
 
     }
 
