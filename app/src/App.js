@@ -19,8 +19,7 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-          </Routes>                    
+            <Route path="/signup" element={<Signup />} />                 
             <Route path="/household" element={<HouseholdStatus />} />
             <Route path="/create" element={<CreateHousehold />} />
             <Route path="/join" element={<JoinHousehold />} />

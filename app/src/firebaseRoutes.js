@@ -1,4 +1,4 @@
-import { getDatabase, ref, get, onValue } from "firebase/database";
+import { getDatabase, ref, get, onValue, set, push } from "firebase/database";
 
 import { database } from "./firebase";
 
@@ -29,4 +29,35 @@ export const listenToData = (path, callback) => {
             callback(null);
         }
     });
+};
+
+// Used to update specific values in the database depending on the path
+export const setValueAtPath = async (path, field, value) => {
+  const dbRef = ref(database, path); // Create a reference to the given path
+  set(ref(database, path), {
+    field: value
+  });
+};
+
+// Create users with a unique id
+export const createUser = async (name, email, id) => {
+  const userRef = ref(database, "users/"+id);
+  const newUserRef = set(userRef, {
+    name: name,
+    email: email,
+    id: id
+  });
+};
+
+// Create households with the code
+export const createHousehold = async (userID, houseID, name) => {
+  const houseRef = ref(database, "households/"+houseID);
+  const newHouseRef = set(houseRef, {
+    currTrashIndex: 0,
+    numberOfPeople: 1,
+    name: name,
+    people: [userID],
+    trashLevel: 0,
+    weight: 0
+  });
 };
