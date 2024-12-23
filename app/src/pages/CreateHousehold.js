@@ -1,6 +1,6 @@
 // CreateHousehold.js
 import React, { useState } from "react";
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { auth, database } from "../firebase";
 import { ref, set } from "firebase/database";
 import { createHousehold } from "../firebaseRoutes";
@@ -8,6 +8,7 @@ import { createHousehold } from "../firebaseRoutes";
 // import "./CreateHousehold.css";
 
 const CreateHousehold = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const { userID } = location.state || {}; // Get userId from state
   const [householdName, setHouseholdName] = useState("");
@@ -21,12 +22,16 @@ const CreateHousehold = () => {
       console.log(userID);
       // Save household to Firebase
       await createHousehold(userID, code, householdName);
+      navigate("/dashboard", { state: { userID: userID }});
     }
     catch(error){
       console.error("Error creating house:", error.code, error.message);
       setMessage(error.message);
     }
   };
+  const navBack = () => {
+    navigate("/household", { state: { userID: userID }});
+  }
 
   return (
     <div className="create-household-container">
@@ -40,6 +45,9 @@ const CreateHousehold = () => {
       />
       <button onClick={generateInviteCode} className="create-btn">
         Generate Invite Code
+      </button>
+      <button onClick={navBack}>
+        Go Back
       </button>
       {inviteCode && <p>Invite Code: {inviteCode}</p>}
     </div>

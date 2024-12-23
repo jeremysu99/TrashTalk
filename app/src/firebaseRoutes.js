@@ -45,7 +45,7 @@ export const createUser = async (name, email, id) => {
   const newUserRef = set(userRef, {
     name: name,
     email: email,
-    id: id
+    household: null
   });
 };
 
