@@ -31,11 +31,16 @@ export const listenToData = (path, callback) => {
     });
 };
 
+
 // Used to update specific values in the database depending on the path
-export const setValueAtPath = async (path, field, value) => {
-  const dbRef = ref(database, path); // Create a reference to the given path
+export const setValueAtPath = async (path, value, name, people, numberOfPeople, trashLevel, trashWeight) => {
   set(ref(database, path), {
-    field: value
+    currTrashIndex: value,
+    numberOfPeople: numberOfPeople,
+    people: people,
+    name: name,
+    trashLevel: trashLevel,
+    trashWeight: trashWeight
   });
 };
 
@@ -58,6 +63,6 @@ export const createHousehold = async (userID, houseID, name) => {
     name: name,
     people: [userID],
     trashLevel: 0,
-    weight: 0
+    trashWeight: 0
   });
 };
