@@ -2,92 +2,93 @@ import React, { useState, useEffect } from 'react';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from '../firebase';
 import { useLocation, useNavigate } from 'react-router-dom'
-import { listenToData, fetchDataOnce } from '../firebaseRoutes';
+import { listenToData, fetchDataOnce, setValueAtPath } from '../firebaseRoutes';
 
 const Dashboard = () => {
-    const location = useLocation();
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState(null);
     const [houseInfo, setHouseInfo] = useState(null);
     const [houseCode, setHouseCode] = useState(null);
-    const [housePeople, setHousePeople] = useState(null);
     const [trashIndex, setTrashIndex] = useState(null);
     const [trashLevel, setTrashLevel] = useState(null);
     const [trashWeight, setTrashWeight] = useState(null);
     const [warningMessage, setWarningMessage] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-
-    
-    const fetchUserData = async (userID) => {
-        try {
-            setIsLoading(true); // Start loading
-            const info = await fetchDataOnce(`/users/${userID}`)
-            setUserInfo(info);
-            const code = info.household
-            setHouseCode(code)
-            const infoHouse = await fetchDataOnce(`/households/${code}`)
-            
-            setHouseInfo(infoHouse);
-            
-            const people = infoHouse.people;
-            setHousePeople(people)
-
-            const index = infoHouse.currTrashIndex;
-            setTrashIndex(index);
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-        }finally {
-            setIsLoading(false); // End loading
-        }
-    }
+    const [isFull, setFull] = useState(false);
 
     useEffect(()=>{   
-        const handleDataUpdate = (data) => {
-            console.log("Updating data")
-            console.log("trashLevel:", trashLevel);
-            console.log("trashWeight:", trashWeight);
-            console.log("housePeople:", housePeople);
-            console.log("trashIndex:", trashIndex);
-            if (data !== null) {
-              const person = housePeople[trashIndex]
-              setTrashLevel(data.trashLevel);
-              setTrashWeight(data.trashWeight);
+        const fetchUserData = async (userID) => {
+            try {
+                const info = await fetchDataOnce(`/users/${userID}`)
+                setUserInfo(info);
+                const code = info.household
+                setHouseCode(code)
+                const infoHouse = await fetchDataOnce(`/households/${code}`)
+                setHouseInfo(infoHouse);
                 
-              if (trashLevel <= 250 && trashWeight > 1){
-                
-                if (userInfo.name == person){
-                    setWarningMessage("Trash is Full! It's your turn to take out the trash!")
-                }
-                else{
-                    setWarningMessage(`Trash is Full! It's ${person}'s turn to take out the trash!`);
-                }
-              }else{
-                if (userInfo.name == person){
-                    setWarningMessage("Trash is not Full, but you must take it out soon!")
-                }
-                else{
-                    setWarningMessage(`Trash is not Full. It's ${person}'s turn to take out the trash.`);
-                }
-              }
-            } else {
-              console.log("No data found at this path.");
+            } catch (error) {
+                console.error("Error fetching user data:", error);
             }
-            setIsLoading(false)
+        }
+        const handleDataUpdate = (data) => {
+            console.log("Updating data");
+            if (data !== null) {
+                setTrashLevel(data.trashLevel);
+                setTrashWeight(data.trashWeight);
+                setTrashIndex(data.currTrashIndex);
+
+                const person = data.people[data.currTrashIndex];
+                if (data.trashLevel <= 250 && data.trashWeight > 1) {
+                    setFull(true);
+                    if (userInfo.name === person) {
+                        setWarningMessage("Trash is Full! It's your turn to take out the trash!");
+                    } else {
+                        setWarningMessage(`Trash is Full! It's ${person}'s turn to take out the trash!`);
+                    }
+                } else {
+                    if (isFull){
+                        setWarningMessage("Trash has been taken out.")
+                        setFull(false)
+                        setTrashIndex((data.currTrashIndex + 1) % data.numberOfPeople)
+                        setValueAtPath(`households/${houseCode}`, (data.currTrashIndex + 1) % data.numberOfPeople, 
+                                      data.name, data.people, data.numberOfPeople, data.trashLevel, data.trashWeight);
+                    }
+                    else{
+                        setFull(false);
+                        if (userInfo.name === person) {
+                            setWarningMessage("Trash is not Full, but you must take it out soon!");
+                        } else {
+                            setWarningMessage(`Trash is not Full. It's ${person}'s turn to take out the trash.`);
+                        }
+                    }
+                }
+            } else {
+                console.log("No data found at this path.");
+            }
         };
-        listenToData(`/households/${houseCode}`, handleDataUpdate);
-         
+
+        // Only start listening to data if houseCode is available
+        if (houseCode) {
+            listenToData(`/households/${houseCode}`, handleDataUpdate);
+        }
+        else{
+            console.log("No house code")
+        }
+        
         onAuthStateChanged(auth, (user) => {
             if (user) {
               // Signed in
               const uid = user.uid;
-              console.log("uid", uid);
               fetchUserData(uid);
-              // listenHouseData();
             } else {
+            
                navigate("/")
             }
           });
-    }, [navigate])
+        return () => {
+            // You might need to implement an off() function in your Firebase service
+            // if your `listenToData` doesn't handle cleanup automatically
+        };
+    }, [navigate, houseCode])
 
     const handleLogout = () => {               
         signOut(auth).then(() => {
@@ -116,7 +117,7 @@ const Dashboard = () => {
                 <div>
                     <p><strong>Household Number:</strong> {userInfo.household || "Not assigned"}</p>
                     <p><strong>Household Name:</strong> {houseInfo.name || "Not assigned"}</p>
-                    <p><strong>Who's Turn it is Next:</strong> {houseInfo.people[houseInfo.currTrashIndex] || "Not assigned"}</p>
+                    <p><strong>Who's Turn it is Next:</strong> {houseInfo.people[trashIndex] || "Not assigned"}</p>
                     {/* Add more fields as needed */}
                 </div>
                 ) : (
