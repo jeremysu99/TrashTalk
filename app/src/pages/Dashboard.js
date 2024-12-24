@@ -3,6 +3,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from '../firebase';
 import { useLocation, useNavigate } from 'react-router-dom'
 import { listenToData, fetchDataOnce, setValueAtPath } from '../firebaseRoutes';
+import TrashVisualizer from '../components/TrashVisualizer';
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ const Dashboard = () => {
                 setTrashIndex(data.currTrashIndex);
 
                 const person = data.people[data.currTrashIndex];
-                if (data.trashLevel <= 250 && data.trashWeight > 1) {
+                if (data.trashLevel <= 250 && data.trashWeight > 4) {
                     setFull(true);
                     if (userInfo.name === person) {
                         setWarningMessage("Trash is Full! It's your turn to take out the trash!");
@@ -45,21 +46,14 @@ const Dashboard = () => {
                         setWarningMessage(`Trash is Full! It's ${person}'s turn to take out the trash!`);
                     }
                 } else {
-                    if (isFull){
-                        setWarningMessage("Trash has been taken out.")
-                        setFull(false)
-                        setTrashIndex((data.currTrashIndex + 1) % data.numberOfPeople)
-                        setValueAtPath(`households/${houseCode}`, (data.currTrashIndex + 1) % data.numberOfPeople, 
-                                      data.name, data.people, data.numberOfPeople, data.trashLevel, data.trashWeight);
+                    setFull(false)
+
+                    if (userInfo.name === person) {
+                        setWarningMessage("Trash is not Full, but you must take it out soon!");
+                    } else {
+                        setWarningMessage(`Trash is not Full. It's ${person}'s turn to take out the trash next.`);
                     }
-                    else{
-                        setFull(false);
-                        if (userInfo.name === person) {
-                            setWarningMessage("Trash is not Full, but you must take it out soon!");
-                        } else {
-                            setWarningMessage(`Trash is not Full. It's ${person}'s turn to take out the trash.`);
-                        }
-                    }
+                    
                 }
             } else {
                 console.log("No data found at this path.");
@@ -99,7 +93,17 @@ const Dashboard = () => {
         // An error happened.
         });
     }
-
+    // Detect changes in `isFull` and handle when trash is no longer full
+    useEffect(() => {
+        if (!isFull && trashLevel > 250) {
+            setTrashIndex((prevIndex) => {
+                const newIndex = (prevIndex + 1) % houseInfo.numberOfPeople;
+                setValueAtPath(`/households/${houseCode}/currTrashIndex`, newIndex);
+                return newIndex;
+            });
+            setWarningMessage("Trash has been taken out.");
+        }
+    }, [isFull, trashLevel]);
 
     return (
  
@@ -129,9 +133,9 @@ const Dashboard = () => {
                         <p>Loading trash level...</p>
                     ) : (
                         <>
-                            <p>Trash Level from Top: {trashLevel} millimeters</p>
-                            <p>Current Trash Weight: {trashWeight} pounds</p>
+                            <TrashVisualizer trashLevel={trashLevel} trashWeight={trashWeight} />
                         </>
+                        
                     )}
 
                     {warningMessage && <div>{warningMessage}</div>}

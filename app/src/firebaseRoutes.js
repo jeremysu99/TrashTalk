@@ -23,7 +23,6 @@ export const listenToData = (path, callback) => {
     const dbRef = ref(database, path);
     onValue(dbRef, (snapshot) => {
         if (snapshot.exists()) {
-            console.log(snapshot.val())
             callback(snapshot.val());
         } else {
             callback(null);
@@ -33,15 +32,8 @@ export const listenToData = (path, callback) => {
 
 
 // Used to update specific values in the database depending on the path
-export const setValueAtPath = async (path, value, name, people, numberOfPeople, trashLevel, trashWeight) => {
-  set(ref(database, path), {
-    currTrashIndex: value,
-    numberOfPeople: numberOfPeople,
-    people: people,
-    name: name,
-    trashLevel: trashLevel,
-    trashWeight: trashWeight
-  });
+export const setValueAtPath = async (path, value) => {
+  await set(ref(database, path), value)
 };
 
 // Create users with a unique id
