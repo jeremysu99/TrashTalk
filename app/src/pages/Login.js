@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
-import {  signInWithEmailAndPassword   } from 'firebase/auth';
+import React, {useState, useEffect} from 'react';
+import {  setPersistence, browserLocalPersistence, signInWithEmailAndPassword   } from 'firebase/auth';
 import { auth } from '../firebase';
 import { NavLink, useNavigate } from 'react-router-dom'
+import { fetchDataOnce } from '../firebaseRoutes';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -9,24 +10,35 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const[message,setMessage]=useState('')
 
-    const onLogin = (e) => {
+    const onLogin = async (e) => {
+
         e.preventDefault();
-        signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+
+        try{
+            await setPersistence(auth, browserLocalPersistence);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password)
             // Signed in
             const user = userCredential.user;
-            navigate("/dashboard")
+            const userID = user.uid;
+            const fetchedInfo = await fetchDataOnce(`/users/${userID}`)
+            // If the user doesn't have a household, nav to household
+            if (!fetchedInfo?.household){      
+                navigate("/household", { state: { userID: userID }});
+            }
+            // Otherwise go to dashboard
+            else{
+                navigate("/dashboard");
+            }
             console.log(user);
-        })
-        .catch((error) => {
+        }
+        catch(error){
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage)
             setMessage(errorMessage);
-        });
-
+        }
+        
     }
-
     return(
         <>
             <main >        
