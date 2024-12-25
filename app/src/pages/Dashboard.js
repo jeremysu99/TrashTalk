@@ -16,6 +16,18 @@ const Dashboard = () => {
     const [warningMessage, setWarningMessage] = useState(null);
     const [isFull, setFull] = useState(false);
 
+    useEffect(() => {
+        const savedIsFull = localStorage.getItem('isFull');
+        if (savedIsFull !== null) {
+            setFull(JSON.parse(savedIsFull));  // Load from localStorage if exists
+        }
+    }, []);
+
+    useEffect(() => {
+        // Store isFull in localStorage
+        localStorage.setItem('isFull', JSON.stringify(isFull));
+    }, [isFull]);
+
     useEffect(()=>{   
         const fetchUserData = async (userID) => {
             try {
@@ -25,7 +37,7 @@ const Dashboard = () => {
                 setHouseCode(code)
                 const infoHouse = await fetchDataOnce(`/households/${code}`)
                 setHouseInfo(infoHouse);
-                
+                setTrashIndex(infoHouse.currTrashIndex)
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
@@ -96,11 +108,9 @@ const Dashboard = () => {
     // Detect changes in `isFull` and handle when trash is no longer full
     useEffect(() => {
         if (!isFull && trashLevel > 250) {
-            setTrashIndex((prevIndex) => {
-                const newIndex = (prevIndex + 1) % houseInfo.numberOfPeople;
-                setValueAtPath(`/households/${houseCode}/currTrashIndex`, newIndex);
-                return newIndex;
-            });
+            // Only update the index if the current one has changed
+            setValueAtPath(`/households/${houseCode}/currTrashIndex`, (trashIndex + 1) % houseInfo.numberOfPeople);
+            setTrashIndex((prevIndex) => (prevIndex + 1) % houseInfo.numberOfPeople);
             setWarningMessage("Trash has been taken out.");
         }
     }, [isFull, trashLevel]);
