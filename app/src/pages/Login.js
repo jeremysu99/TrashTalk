@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {  signInWithEmailAndPassword   } from 'firebase/auth';
+import {  setPersistence, browserLocalPersistence, signInWithEmailAndPassword   } from 'firebase/auth';
 import { auth } from '../firebase';
 import { NavLink, useNavigate } from 'react-router-dom'
 import { fetchDataOnce } from '../firebaseRoutes';
@@ -15,6 +15,7 @@ const Login = () => {
         e.preventDefault();
 
         try{
+            await setPersistence(auth, browserLocalPersistence);
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
             // Signed in
             const user = userCredential.user;
