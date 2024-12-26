@@ -48,13 +48,33 @@ export const createUser = async (name, email, id) => {
 
 // Create households with the code
 export const createHousehold = async (userID, houseID, name) => {
-  const houseRef = ref(database, "households/"+houseID);
+  const houseRef = ref(database, "households/" + houseID);
+  const userRef = ref(database, "households/" + userID + "/household");
   const newHouseRef = set(houseRef, {
     currTrashIndex: 0,
     numberOfPeople: 1,
     name: name,
-    people: [userID],
+    housemates: [[userID]],
     trashLevel: 0,
     trashWeight: 0
   });
+  await set(userRef, houseID)
 };
+
+// Join households with the code
+
+export const joinHousehold = async (userID, houseID, name) => {
+  try {
+    const houseRef = ref(database, "households/" + houseID + "/housemates");
+    const userRef = ref(database, "users/" + userID + "/household");
+    const people = await fetchDataOnce("households/" + houseID + "/housemates");
+    // Append the new userID to the housemates list
+    people.push([name, userID]);
+    // Update the housemates array in the database
+    await set(houseRef, people);
+    await set(userRef, houseID);
+    console.log("User successfully added to the household!");
+  } catch (error) {
+    console.error("Error joining the household:", error);
+  }
+}

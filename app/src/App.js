@@ -11,21 +11,6 @@ import { auth } from "./firebase";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-          setUser(currentUser);
-          setIsLoading(false);
-      });
-
-      return () => unsubscribe(); // Cleanup the listener
-  }, []);
-
-  if (isLoading) {
-      return <p>Loading...</p>;
-  }
   return (
     <Router>
       <div>                
