@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from '../firebase';
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -15,8 +15,13 @@ const Dashboard = () => {
     const [trashWeight, setTrashWeight] = useState(null);
     const [warningMessage, setWarningMessage] = useState(null);
     const [isFull, setFull] = useState(false);
-    const previousTrashLevelRef = useRef(null);
-    const previousFullRef = useRef(false);
+
+    useEffect(() => {
+        const savedIsFull = localStorage.getItem('isFull');
+        if (savedIsFull !== null) {
+            setFull(JSON.parse(savedIsFull));  // Load from localStorage if exists
+        }
+    }, []);
 
     useEffect(() => {
         // Store isFull in localStorage
@@ -38,11 +43,13 @@ const Dashboard = () => {
             }
         }
         const handleDataUpdate = (data) => {
+            console.log("Updating data");
             if (data !== null) {
                 setTrashLevel(data.trashLevel);
                 setTrashWeight(data.trashWeight);
                 setTrashIndex(data.currTrashIndex);
-                const person = data.housemates[data.currTrashIndex][0];
+
+                const person = data.people[data.currTrashIndex];
                 if (data.trashLevel <= 250 && data.trashWeight > 4) {
                     setFull(true);
                     if (userInfo.name === person) {
@@ -52,13 +59,14 @@ const Dashboard = () => {
                     }
                 } else {
                     setFull(false)
+
                     if (userInfo.name === person) {
                         setWarningMessage("Trash is not Full, but you must take it out soon!");
                     } else {
                         setWarningMessage(`Trash is not Full. It's ${person}'s turn to take out the trash next.`);
                     }
+                    
                 }
-
             } else {
                 console.log("No data found at this path.");
             }
@@ -68,6 +76,9 @@ const Dashboard = () => {
         if (houseCode) {
             listenToData(`/households/${houseCode}`, handleDataUpdate);
         }
+        else{
+            console.log("No house code")
+        }
         
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -75,9 +86,14 @@ const Dashboard = () => {
               const uid = user.uid;
               fetchUserData(uid);
             } else {
+            
                navigate("/")
             }
           });
+        return () => {
+            // You might need to implement an off() function in your Firebase service
+            // if your `listenToData` doesn't handle cleanup automatically
+        };
     }, [navigate, houseCode])
 
     const handleLogout = () => {               
@@ -89,21 +105,15 @@ const Dashboard = () => {
         // An error happened.
         });
     }
-    // If the fullness of the trash changes, update the previousFullRef
-    useEffect(() => {
-        if (isFull)
-            previousFullRef.current = isFull
-    }, [isFull])
     // Detect changes in `isFull` and handle when trash is no longer full
     useEffect(() => {
-        if (previousFullRef.current && trashLevel > 250) {
+        if (!isFull && trashLevel > 250) {
             // Only update the index if the current one has changed
-            if (trashLevel > previousTrashLevelRef.current) {
-                setValueAtPath(`/households/${houseCode}/currTrashIndex`, (trashIndex + 1) % houseInfo.numberOfPeople);
-                setTrashIndex((prevIndex) => (prevIndex + 1) % houseInfo.numberOfPeople);
-            }
+            setValueAtPath(`/households/${houseCode}/currTrashIndex`, (trashIndex + 1) % houseInfo.numberOfPeople);
+            setTrashIndex((prevIndex) => (prevIndex + 1) % houseInfo.numberOfPeople);
+            setWarningMessage("Trash has been taken out.");
         }
-    }, [previousFullRef, trashLevel]);
+    }, [isFull, trashLevel]);
 
     return (
  
@@ -113,7 +123,7 @@ const Dashboard = () => {
                 <div>
                     <h1>Welcome to your dashboard {userInfo.name}!</h1>
                     {/* Add more fields as needed */}
-                </div> 
+                </div>
                 ) : (
                 <p>Loading user information...</p>
                 )}
@@ -121,7 +131,7 @@ const Dashboard = () => {
                 <div>
                     <p><strong>Household Number:</strong> {userInfo.household || "Not assigned"}</p>
                     <p><strong>Household Name:</strong> {houseInfo.name || "Not assigned"}</p>
-                    <p><strong>Whose Turn it is Next:</strong> {houseInfo.housemates[houseInfo.currTrashIndex][0] || "Not assigned"}</p>
+                    <p><strong>Who's Turn it is Next:</strong> {houseInfo.people[trashIndex] || "Not assigned"}</p>
                     {/* Add more fields as needed */}
                 </div>
                 ) : (
