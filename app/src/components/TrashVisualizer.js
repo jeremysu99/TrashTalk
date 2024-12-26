@@ -23,7 +23,7 @@ const TrashVisualizer = ({ trashLevel, trashWeight }) => {
                 ></div>
             </div>
             <div className="trash-info">
-                <p>Trash Level: {1000 - trashLevel} mm (max. 1000 mm)</p>
+                <p>Trash Level From Top: {trashLevel} mm</p>
                 <p>Trash Weight: {trashWeight} lbs</p>
                 {weightWarning && <p className="warning">Weight exceeds safe limit!</p>}
             </div>
