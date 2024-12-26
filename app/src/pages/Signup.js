@@ -2,34 +2,34 @@ import React, {useState} from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {  createUserWithEmailAndPassword  } from 'firebase/auth';
 import { auth } from '../firebase';
+import { createUser } from '../firebaseRoutes';
+
 
 const Signup = () => {
     const navigate = useNavigate();
 
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('');
     const[message,setMessage]=useState('')
 
     const onSubmit = async (e) => {
       e.preventDefault()
-
-      await createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            console.log(user);
-            setMessage(`User created: ${email}`);
-            navigate("/login")
-        })
-        .catch((error) => {
-            //Error
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode, errorMessage);
-            setMessage(errorMessage);
-        });
-
-
+      try {
+        // Create the user with email and password
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;  
+        // Set user's name in Realtime Database
+        const userID = user.uid;
+        const path = `/users/${userID}/name`;
+        await createUser(name, email, userID)
+        setMessage(`User created: ${email}`);
+        navigate("/login", { state: { successMessage: "Sign up successful! Please log in." } });
+      } catch (error) {
+        // Handle errors
+        console.error("Error creating user:", error.code, error.message);
+        setMessage(error.message);
+      }
     }
 
   return (
@@ -38,7 +38,20 @@ const Signup = () => {
             <div>
                 <div>                  
                     <h1> TrashTalk </h1>                                                                            
-                    <form>                                                                                            
+                    <form>
+                        <div>
+                            <label htmlFor="name">
+                                Name
+                            </label>
+                            <input
+                                type="name"
+                                label="name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}  
+                                required                                    
+                                placeholder="Name"                                
+                            />
+                        </div>                                                                                            
                         <div>
                             <label htmlFor="email-address">
                                 Email address
