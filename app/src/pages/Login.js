@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, {useState} from 'react';
-=======
 import React, {useState, useEffect} from 'react';
->>>>>>> parent of 40b324e (Merge pull request #16 from jeremysu99/jeremy)
 import {  signInWithEmailAndPassword   } from 'firebase/auth';
 import { auth } from '../firebase';
 import { NavLink, useNavigate } from 'react-router-dom'
@@ -15,14 +11,8 @@ const Login = () => {
 
     const onLogin = (e) => {
         e.preventDefault();
-<<<<<<< HEAD
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-=======
-
-        try{
-            const userCredential = await signInWithEmailAndPassword(auth, email, password)
->>>>>>> parent of 40b324e (Merge pull request #16 from jeremysu99/jeremy)
             // Signed in
             const user = userCredential.user;
             navigate("/dashboard")
