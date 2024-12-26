@@ -6,6 +6,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
 
+=======
+import HouseholdStatus from "./pages/HouseholdStatus";
+import CreateHousehold from "./pages/CreateHousehold";
+import JoinHousehold from "./pages/JoinHousehold";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+function App() {
+>>>>>>> parent of 40b324e (Merge pull request #16 from jeremysu99/jeremy)
   return (
     <Router>
       <div>
