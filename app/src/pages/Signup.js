@@ -15,30 +15,21 @@ const Signup = () => {
 
     const onSubmit = async (e) => {
       e.preventDefault()
-
       try {
         // Create the user with email and password
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-  
-        console.log(user);
-  
+        const user = userCredential.user;  
         // Set user's name in Realtime Database
         const userID = user.uid;
         const path = `/users/${userID}/name`;
-        console.log(path)
         await createUser(name, email, userID)
-  
         setMessage(`User created: ${email}`);
-        
-        navigate("/login");
+        navigate("/login", { state: { successMessage: "Sign up successful! Please log in." } });
       } catch (error) {
         // Handle errors
         console.error("Error creating user:", error.code, error.message);
         setMessage(error.message);
       }
-
-
     }
 
   return (

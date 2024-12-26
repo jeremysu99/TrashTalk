@@ -1,21 +1,26 @@
 import React, {useState, useEffect} from 'react';
 import {  setPersistence, browserLocalPersistence, signInWithEmailAndPassword   } from 'firebase/auth';
 import { auth } from '../firebase';
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { fetchDataOnce } from '../firebaseRoutes';
 
 const Login = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { successMessage } = location.state || {};
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const[message,setMessage]=useState('')
 
     const onLogin = async (e) => {
-
         e.preventDefault();
-
         try{
-            await setPersistence(auth, browserLocalPersistence);
+            try {
+                await setPersistence(auth, browserLocalPersistence); // Ensures persistence across sessions
+                console.log("Persistence set to local.");
+            } catch (error) {
+                console.error("Error setting persistence:", error);
+            }
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
             // Signed in
             const user = userCredential.user;
@@ -44,8 +49,8 @@ const Login = () => {
             <main >        
                 <section>
                     <div>                                            
-                        <p> TrashTalk </p>                       
-
+                        <p> TrashTalk Login</p>                       
+                        {successMessage && <p>{successMessage}</p>}
                         <form>                                              
                             <div>
                                 <label htmlFor="email-address">
