@@ -15,9 +15,14 @@ const Login = () => {
 
     const onLogin = (e) => {
         e.preventDefault();
+<<<<<<< HEAD
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
 =======
+
+        try{
+            const userCredential = await signInWithEmailAndPassword(auth, email, password)
+>>>>>>> parent of 40b324e (Merge pull request #16 from jeremysu99/jeremy)
             // Signed in
             const user = userCredential.user;
             navigate("/dashboard")
