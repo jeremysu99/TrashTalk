@@ -10,11 +10,13 @@
 - Taking out the trash resets the sensors, updates the app, and refreshes the cycle to uphold responsibility for all housemates
   
 - Equipped with Firebase Realtime Database updating and wireless connection
+
+- Deployed with Firebase Hosting
   
 ## Technologies Used
 - Arduino IDE
 
-- Firebase
+- Firebase (Realtime Database, Authentication, Hosting)
 
 - Express.js
 
@@ -23,6 +25,6 @@
 - Node.js
 
 ## Setup instructions
-- Clone the repository
+- visit `https://trashtalk-453d2.web.app`
   
-- Connect to the Firebase Realtime Database
+- add page to home screen and enjoy!
