@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { auth, database } from "../firebase";
 import { ref, set } from "firebase/database";
-import { createHousehold } from "../firebaseRoutes";
+import { createHousehold, joinHousehold} from "../firebaseRoutes";
 
 // import "./CreateHousehold.css";
 
