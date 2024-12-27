@@ -22,6 +22,7 @@ const CreateHousehold = () => {
       console.log(userID);
       // Save household to Firebase
       await createHousehold(userID, code, householdName);
+      await joinHousehold(userID, code, householdName);
       navigate("/dashboard", { state: { userID: userID }});
     }
     catch(error){
