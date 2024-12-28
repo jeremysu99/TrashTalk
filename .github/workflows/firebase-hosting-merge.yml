@@ -12,10 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node.js
-        run: nvm install 22.11.0
-        working-directory: ./app
-      - run: nvm use 22.11.0
-        working-directory: ./app
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.11.0'
       - name: Set up Node.js
         run: npm install node-fetch
         working-directory: ./app
