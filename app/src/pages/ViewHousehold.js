@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { database } from '../firebase';
-import { collection, getDocs, getDoc, doc} from "firebase/firestore";
+import { ref, get} from "firebase/database";
 import { useLocation } from "react-router-dom";
 
 
@@ -20,22 +20,28 @@ const ViewHousehold = () => {
                     return;
                 }
                 //refrence to household 
-                const householdDocumentRef=doc(database,"households", householdCode);
-                //fetch the document to make sure it exists
-                const householdDocument = await getDoc(householdDocumentRef);
+                const householdRef=ref(database,`households/${householdCode}`);
+                //fetch data at the reference above
+                const householdSnapshot = await get(householdRef);
 
-                if (householdDocument.exists()){
-                    console.log("Household Doument: ", householdDocument.data());
+                //check if household exist in database
+                if (householdSnapshot.exists()){
 
-                    const housematesRef = collection(database, "households", householdCode, "housemates");
-                    const housemateQuery = await getDocs(housematesRef);
+                    const householdData=householdSnapshot.val();
+                    console.log("data: ",householdData);
 
-                    const housematesList =[];
-                    housemateQuery.forEach((doc) => {
-                        housematesList.push(doc.data());
-                    });
+                    const housemateIds=householdData.housemates.flat();
+                    const housemateDetails=[];
 
-                    setMembers(housematesList);
+                    for (const key of housemateIds){
+                        const userRef=ref(database, `users/${key}`)
+                        const userSnapshot=await get(userRef);
+
+                        if(userSnapshot.exists()){
+                            housemateDetails.push(userSnapshot.val());
+                        } 
+                    }
+                    setMembers(housemateDetails)
                 }else{
                     console.log("Household not found");
                 }
@@ -68,10 +74,7 @@ const ViewHousehold = () => {
              </ul>
             )}
         </div>
-
-
     )
-
 }
 
 export default ViewHousehold
