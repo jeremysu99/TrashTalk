@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import { database } from '../firebase';
 import { ref, get} from "firebase/database";
-import { useLocation } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
+import { fetchDataOnce } from '../firebaseRoutes';
 
 const ViewHousehold = () => {
     const location=useLocation();
+    const navigate = useNavigate();
+
     const {householdCode}=location.state || {};
 
     const[members,setMembers]=useState([]);
@@ -19,32 +21,19 @@ const ViewHousehold = () => {
                     setLoading(false);
                     return;
                 }
-                //refrence to household 
-                const householdRef=ref(database,`households/${householdCode}`);
-                //fetch data at the reference above
-                const householdSnapshot = await get(householdRef);
+                const householdData = await fetchDataOnce(`/households/${householdCode}`)
+                console.log("data: ",householdData);
 
-                //check if household exist in database
-                if (householdSnapshot.exists()){
+                const housemateIds=householdData.housemates.flat();
+                const housemateDetails=[];
 
-                    const householdData=householdSnapshot.val();
-                    console.log("data: ",householdData);
-
-                    const housemateIds=householdData.housemates.flat();
-                    const housemateDetails=[];
-
-                    for (const key of housemateIds){
-                        const userRef=ref(database, `users/${key}`)
-                        const userSnapshot=await get(userRef);
-
-                        if(userSnapshot.exists()){
-                            housemateDetails.push(userSnapshot.val());
-                        } 
-                    }
-                    setMembers(housemateDetails)
-                }else{
-                    console.log("Household not found");
+                for (const key of housemateIds){
+                    const userData = await fetchDataOnce(`/users/${key}`)
+                    if (userData)
+                        housemateDetails.push(userData);
                 }
+                setMembers(housemateDetails)
+                
                 setLoading(false);
             } catch (error){
                 console.error("Error fetching housemates: ", error);
@@ -55,6 +44,9 @@ const ViewHousehold = () => {
         fetchMembers();
     }, [householdCode]);
 
+    const navBack = () => {
+        navigate("/dashboard");
+    }
 
 
 
@@ -73,6 +65,9 @@ const ViewHousehold = () => {
                 ))}
              </ul>
             )}
+            <button onClick={navBack}>
+             Go Back
+            </button>
         </div>
     )
 }
