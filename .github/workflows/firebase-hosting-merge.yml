@@ -14,7 +14,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22.11.0'
+          node-version: '23.2.0'
       - run: npm install react-scripts@latest
         working-directory: ./app
       - name: Set up Node.js
