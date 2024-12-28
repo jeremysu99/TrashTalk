@@ -12,9 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22.11.0
+        run: npm install node-fetch
+        working-directory: ./app
       - name: Install dependencies
         run: npm install
         working-directory: ./app
