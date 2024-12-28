@@ -6,13 +6,21 @@ import { onAuthStateChanged } from "firebase/auth";
 import HouseholdStatus from "./pages/HouseholdStatus";
 import CreateHousehold from "./pages/CreateHousehold";
 import JoinHousehold from "./pages/JoinHousehold";
-import { auth } from "./firebase";
+import { auth, generateToken, messaging } from "./firebase";
+import { onMessage } from "firebase/messaging"
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    generateToken();
+    onMessage(messaging, (payload) => {
+      console.log(payload)
+    })
+  }, [])
 
   useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
