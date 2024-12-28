@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from '../firebase';
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate} from 'react-router-dom'
 import { listenToData, fetchDataOnce, setValueAtPath } from '../firebaseRoutes';
 import TrashVisualizer from '../components/TrashVisualizer';
 
@@ -89,6 +89,16 @@ const Dashboard = () => {
         // An error happened.
         });
     }
+
+    const handleViewHouseholdMembers=() => {
+        if(userInfo && userInfo.household){
+            navigate("/view",{state:{ householdCode: userInfo.household}})
+        }else{
+            console.error("Household infor is not available")
+        }
+    }
+
+
     // If the fullness of the trash changes, update the previousFullRef
     useEffect(() => {
         if (isFull)
@@ -140,6 +150,9 @@ const Dashboard = () => {
 
                     {warningMessage && <div>{warningMessage}</div>}
                 </div>
+                <button onClick={handleViewHouseholdMembers}>
+                    View Household Members
+                </button>
                 <button onClick={handleLogout}>
                     Logout
                 </button>

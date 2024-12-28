@@ -6,8 +6,11 @@ import { onAuthStateChanged } from "firebase/auth";
 import HouseholdStatus from "./pages/HouseholdStatus";
 import CreateHousehold from "./pages/CreateHousehold";
 import JoinHousehold from "./pages/JoinHousehold";
+
+import ViewHousehold from "./pages/ViewHousehold";
 import { auth, generateToken, messaging } from "./firebase";
 import { onMessage } from "firebase/messaging"
+
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -44,7 +47,11 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />                 
+
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/view" element={<ViewHousehold/>}/>
+                             
+
             <Route path="/household" element={<HouseholdStatus />} />
             <Route path="/create" element={<CreateHousehold />} />
             <Route path="/join" element={<JoinHousehold />} />
