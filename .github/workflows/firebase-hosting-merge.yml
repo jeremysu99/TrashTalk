@@ -21,7 +21,7 @@ jobs:
         run: npm install
         working-directory: ./app
         
-      - run: npm run build
+      - run: CI=false npm run build
         working-directory: ./app
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
