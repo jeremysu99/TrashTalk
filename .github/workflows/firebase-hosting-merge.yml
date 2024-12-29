@@ -23,7 +23,7 @@ jobs:
         
       - run: CI=false npm run build
         working-directory: ./app
-      - run: pwd
+      - run: cd app
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
