@@ -19,7 +19,6 @@ const database = getDatabase(app);
 const messaging = getMessaging(app);
 
 
-
 export const generateToken = async () => {
     const permission = await Notification.requestPermission();
     console.log(permission)
