@@ -23,7 +23,13 @@ jobs:
         
       - run: CI=false npm run build
         working-directory: ./app
-      - run: cd app
+        
+      - name: Copy to root
+        run: cp ./app/firebase.json ./firebase.json
+      - name: Copy to root
+        run: cp ./app/.firebaserc ./.firebaserc
+      - name: Copy to root
+        run: cp -r ./app/build ./build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
