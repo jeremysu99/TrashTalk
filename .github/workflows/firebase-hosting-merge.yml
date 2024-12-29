@@ -29,3 +29,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TRASHTALK_453D2 }}
           channelId: live
           projectId: trashtalk-453d2
+        working-directory: ./app
