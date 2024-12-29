@@ -19,14 +19,10 @@ jobs:
         working-directory: ./app
       - name: Install dependencies
         run: npm install
-        working-directory: ./app
+      
         
       - run: CI=false npm run build
-        working-directory: ./app
-
-      - name: Prepare firebase.json
-        run: cp ./app/firebase.json ./firebase.json
-        
+      - run: pwd
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
