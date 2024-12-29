@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '23.2.0'
-      - run: npm install react-scripts@latest
+      - run: npm install react-scripts@latest webpack@latest
         working-directory: ./app
       - name: Set up Node.js
         run: npm install node-fetch
