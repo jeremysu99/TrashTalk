@@ -2,7 +2,6 @@ import { getDatabase, ref, get, onValue, set, push } from "firebase/database";
 
 import { database } from "./firebase";
 
-const fetch = require('node-fetch')
 // Used to read data once (best for users and curr user index)
 export const fetchDataOnce = async (path) => {
     const dbRef = ref(database, path); // Create a reference to the path in Firebase Realtime Database
@@ -79,24 +78,3 @@ export const joinHousehold = async (userID, houseID, name) => {
     console.error("Error joining the household:", error);
   }
 }
-
-const sendNotification = async (fcmToken, message) => {
-  const response = await fetch('https://fcm.googleapis.com/fcm/send', {
-    method: 'POST',
-    headers: {
-      Authorization: 'key=your-server-key',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      to: fcmToken,
-      notification: {
-        title: message.title,
-        body: message.body,
-        icon: message.icon,
-      },
-    }),
-  });
-
-  const data = await response.json();
-  console.log('Notification sent:', data);
-};
