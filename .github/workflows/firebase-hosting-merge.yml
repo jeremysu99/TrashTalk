@@ -33,9 +33,7 @@ jobs:
           REACT_APP_APP_ID: ${{ secrets.REACT_APP_APP_ID }}
           REACT_APP_MEASUREMENT_ID: ${{ secrets.REACT_APP_MEASUREMENT_ID }}
           REACT_APP_VAPID_KEY: ${{ secrets.REACT_APP_VAPID_KEY }}
-        
-      - name: Copy to root
-        run: cp ./app/firebase.json ./firebase.json
+ 
       - name: Copy to root
         run: cp ./app/.firebaserc ./.firebaserc
       - name: Copy to root
