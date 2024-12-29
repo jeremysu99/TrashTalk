@@ -82,3 +82,5 @@ node_modules/
 # dotenv environment variables file
 
 app/src/firebase.js
+
+.env
