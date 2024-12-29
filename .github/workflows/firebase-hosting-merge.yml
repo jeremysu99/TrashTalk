@@ -17,9 +17,6 @@ jobs:
           node-version: '23.2.0'
       - run: npm install react-scripts@latest webpack@latest
         working-directory: ./app
-      - name: Set up Node.js
-        run: npm install node-fetch
-        working-directory: ./app
       - name: Install dependencies
         run: npm install
         working-directory: ./app
