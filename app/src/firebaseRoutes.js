@@ -47,14 +47,15 @@ export const createUser = async (name, email, id) => {
 };
 
 // Create households with the code
-export const createHousehold = async (userID, houseID, name) => {
+export const createHousehold = async (userID, houseID, name, nameOfUser) => {
   const houseRef = ref(database, "households/" + houseID);
-  const userRef = ref(database, "households/" + userID + "/household");
+  const userRef = ref(database, "users/" + userID + "/household");
+
   const newHouseRef = set(houseRef, {
     currTrashIndex: 0,
     numberOfPeople: 1,
     name: name,
-    housemates: [[userID]],
+    housemates: [[nameOfUser, userID]],
     trashLevel: 0,
     trashWeight: 0
   });
@@ -68,15 +69,13 @@ export const joinHousehold = async (userID, houseID, name) => {
     const houseRef = ref(database, "households/" + houseID + "/housemates");
     const userRef = ref(database, "users/" + userID + "/household");
     const people = await fetchDataOnce("households/" + houseID + "/housemates");
-    const numberRef=ref(database,"household/" + houseID + "/numberOfPeople");
+    const numberRef=ref(database,"households/" + houseID + "/numberOfPeople");
     // Append the new userID to the housemates list
     people.push([name, userID]);
     // Update the housemates array in the database
     await set(houseRef, people);
     await set(userRef, houseID);
     //update number of people
-    const currNumberCheck=get(numberRef);
-    const currNumber =currNumberCheck.exists()?currNumberCheck.val():0;
     await runTransaction(numberRef, (currentNumber) => {
       return (currentNumber || 0 ) + 1;
     })
