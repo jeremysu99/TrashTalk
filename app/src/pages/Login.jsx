@@ -3,7 +3,7 @@ import {  setPersistence, browserLocalPersistence, signInWithEmailAndPassword   
 import { auth } from '../firebase';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { fetchDataOnce } from '../firebaseRoutes';
-
+import logo from './logo.png'
 const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -49,15 +49,15 @@ const Login = () => {
     return(
         <>
             <main >        
-                <section>
-                    <div>                                            
-                        <p> TrashTalk Login</p>                       
-                        {successMessage && <p>{successMessage}</p>}
-                        <form>                                              
-                            <div>
-                                <label htmlFor="email-address">
-                                    Email address
-                                </label>
+                <section class="login-container">
+                    <div class="login-form">
+                        <div class="logo-container">
+                            <img src={logo} alt="TrashTalk" class="w-24 h-auto"/>
+                        </div>
+                        <div class="px-16">                                           
+                        <h2 class="syne-login">Trash Talk</h2>                       
+                        {successMessage && <p class="message">{successMessage}</p>}
+                        <form class="login-form-container">                                              
                                 <input
                                     id="email-address"
                                     name="email"
@@ -65,13 +65,9 @@ const Login = () => {
                                     required                                                                                
                                     placeholder="Email address"
                                     onChange={(e)=>setEmail(e.target.value)}
+                                    class="input-field mt-8"
                                 />
-                            </div>
 
-                            <div>
-                                <label htmlFor="password">
-                                    Password
-                                </label>
                                 <input
                                     id="password"
                                     name="password"
@@ -79,28 +75,29 @@ const Login = () => {
                                     required                                                                                
                                     placeholder="Password"
                                     onChange={(e)=>setPassword(e.target.value)}
+                                    class="input-field"
                                 />
-                            </div>
-
-                            <div>
-                                <button                                    
-                                    onClick={onLogin}                                        
-                                >      
-                                    Login                                                                  
-                                </button>
-                            </div>                               
+                            
+                            <button                                    
+                                onClick={onLogin}
+                                class="login-button"                                    
+                            >      
+                                Login                                                                  
+                            </button>
                         </form>
-
-                        {message && <p>{message}</p>}
-
-                        <p className="text-sm text-white text-center">
-                            No account yet? {' '}
+                        
+                        {message && <p class="message">{message}</p>}
+                        
+                        <p className="signup-link">
+                            {' '}
                             <NavLink to="/signup">
-                                Sign up
+                            Don't have an account yet? Sign up
                             </NavLink>
                         </p>
-
+                    </div> 
+                    
                     </div>
+
                 </section>
             </main>
         </>

@@ -35,7 +35,12 @@ function App() {
   }, []);
 
   if (isLoading) {
-      return <p>Loading...</p>;
+      return (
+        <div className="login-container">
+          <p className="text-xl font-semibold">Loading...</p>
+        </div>
+        
+    );
   }
   return (
     <Router>
