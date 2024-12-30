@@ -44,6 +44,7 @@
   padding: 0.5rem;
   border-radius: 0.5rem;
   width: 100%;
+  z-index: 2;
 }
 
 /* Button */
@@ -54,8 +55,9 @@
   border-radius: 0.5rem;
   text-align: center;
   font-weight: bold;
-  width: 100%;
+  width: auto;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 .login-button:hover {
@@ -88,6 +90,7 @@
     left: 0; /* Aligns the image to the left */
     width: 200px; /* Set the desired width */
     height: auto; /* Maintains the aspect ratio */
+    z-index: 1;
 }
 
 .bottom-right-image {
@@ -96,4 +99,14 @@
     right: 0; /* Aligns the image to the right */
     width: 150px; /* Set the desired width */
     height: auto; /* Maintains the aspect ratio */
+    z-index: 1;
+}
+
+.div-container {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  height: 100vh; /* Take up the full height of the viewport */
+  text-align: center; /* Center text */
 }
