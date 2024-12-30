@@ -4,6 +4,8 @@ import { auth } from '../firebase';
 import { useLocation, useNavigate} from 'react-router-dom'
 import { listenToData, fetchDataOnce, setValueAtPath } from '../firebaseRoutes';
 import TrashVisualizer from '../components/TrashVisualizer';
+import house from './images/house.png'
+import logout from './images/logout.png'
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -118,14 +120,14 @@ const Dashboard = () => {
     return (
  
         <nav>
-            <div>
+            <div class="bg-[#FFFBF1] w-screen h-screen">
                 {userInfo ? (
                 <div>
                     <h1>Welcome to your dashboard {userInfo.name}!</h1>
                     {/* Add more fields as needed */}
                 </div> 
                 ) : (
-                <p>Loading user information...</p>
+                <p class="message">Loading user information...</p>
                 )}
                 {houseInfo ? (
                 <div>
@@ -135,12 +137,12 @@ const Dashboard = () => {
                     {/* Add more fields as needed */}
                 </div>
                 ) : (
-                <p>Loading user information...</p>
+                <p class="message">Loading user information...</p>
                 )}
                 <div>
                     <h1>Trash Level Monitor</h1>
                     {!trashLevel ? (
-                        <p>Loading trash level...</p>
+                        <p class="message">Loading trash level...</p>
                     ) : (
                         <>
                             <TrashVisualizer trashLevel={trashLevel} trashWeight={trashWeight} />
@@ -150,12 +152,14 @@ const Dashboard = () => {
 
                     {warningMessage && <div>{warningMessage}</div>}
                 </div>
-                <button onClick={handleViewHouseholdMembers}>
-                    View Household Members
-                </button>
-                <button onClick={handleLogout}>
-                    Logout
-                </button>
+                <div className="footer fixed bottom-0 w-full bg-white flex justify-around py-4 shadow-lg">
+                    <button onClick={handleViewHouseholdMembers} className="footer-button px-6 py-2  text-white rounded hover:bg-[#DBEAD5]">
+                        <img src={house} class="w-8"/>
+                    </button>
+                    <button onClick={handleLogout} className="footer-button px-6 py-2 text-white rounded hover:bg-[#DBEAD5]">
+                        <img src={logout} class="w-8"/>
+                    </button>
+                </div>
             </div>
 
         </nav>
