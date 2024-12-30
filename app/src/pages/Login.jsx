@@ -70,7 +70,7 @@ const Login = () => {
                                     required                                                                                
                                     placeholder="Email address"
                                     onChange={(e)=>setEmail(e.target.value)}
-                                    class="input-field mt-8"
+                                    class="input-field mt-4"
                                 />
 
                                 <input

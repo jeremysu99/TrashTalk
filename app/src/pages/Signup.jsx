@@ -55,7 +55,7 @@ const Signup = () => {
                                 onChange={(e) => setName(e.target.value)}  
                                 required                                    
                                 placeholder="Name"
-                                class="input-field mt-8"                                
+                                class="input-field mt-4"                                
                             />
                         </div>                                                                                            
                         <div>

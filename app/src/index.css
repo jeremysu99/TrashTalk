@@ -94,6 +94,6 @@
     position: absolute; /* Positions the image within the container */
     bottom: 0; /* Aligns the image to the bottom */
     right: 0; /* Aligns the image to the right */
-    width: 200px; /* Set the desired width */
+    width: 150px; /* Set the desired width */
     height: auto; /* Maintains the aspect ratio */
 }
