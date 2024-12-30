@@ -4,6 +4,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { auth, database } from "../firebase";
 import { ref, get, child } from "firebase/database";
 import { joinHousehold, fetchDataOnce } from "../firebaseRoutes";
+import leaf1 from './images/leaf1.png'
+import leaf2 from './images/leaf2.png'
 
 const JoinHousehold = () => {
   const navigate = useNavigate();
@@ -28,6 +30,9 @@ const JoinHousehold = () => {
     navigate("/household", { state: { userID: userID }});
   }
   return (
+    <main>
+      <img src={leaf1} alt="leaf1" class="top-left-image"/>
+      <img src={leaf2} alt="leaf1" class="bottom-right-image"/>
     <div className="join-household-container">
       <h2>Join Household</h2>
       <input
@@ -45,6 +50,7 @@ const JoinHousehold = () => {
       </button>
       {statusMessage && <p>{statusMessage}</p>}
     </div>
+    </main>
   );
 };
 

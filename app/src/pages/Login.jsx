@@ -3,7 +3,10 @@ import {  setPersistence, browserLocalPersistence, signInWithEmailAndPassword   
 import { auth } from '../firebase';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { fetchDataOnce } from '../firebaseRoutes';
-import logo from './logo.png'
+import logo from './images/logo.png'
+import leaf1 from './images/leaf1.png'
+import leaf2 from './images/leaf2.png'
+
 const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -49,13 +52,15 @@ const Login = () => {
     return(
         <>
             <main >        
+                <img src={leaf1} alt="leaf1" class="top-left-image"/>
+                <img src={leaf2} alt="leaf1" class="bottom-right-image"/>
                 <section class="login-container">
                     <div class="login-form">
                         <div class="logo-container">
                             <img src={logo} alt="TrashTalk" class="w-24 h-auto"/>
                         </div>
                         <div class="px-16">                                           
-                        <h2 class="syne-login">Trash Talk</h2>                       
+                        <h2 class="syne-login">TrashTalk</h2>                       
                         {successMessage && <p class="message">{successMessage}</p>}
                         <form class="login-form-container">                                              
                                 <input

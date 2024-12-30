@@ -3,7 +3,9 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {  createUserWithEmailAndPassword  } from 'firebase/auth';
 import { auth } from '../firebase';
 import { createUser } from '../firebaseRoutes';
-
+import logo from './images/logo.png'
+import leaf1 from './images/leaf1.png'
+import leaf2 from './images/leaf2.png'
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -33,69 +35,70 @@ const Signup = () => {
     }
 
   return (
-    <main >        
-        <section>
-            <div>
-                <div>                  
-                    <h1> TrashTalk </h1>                                                                            
-                    <form>
+    <main >  
+        <img src={leaf1} alt="leaf1" class="top-left-image"/>
+        <img src={leaf2} alt="leaf1" class="bottom-right-image"/>      
+        <section class="login-container">
+            <div class="login-form">
+                <div>
+                    <div class="logo-container">
+                            <img src={logo} alt="TrashTalk" class="w-24 h-auto"/>
+                    </div>
+                    <div class="px-16">                  
+                    <h2 class="syne-login">TrashTalk</h2>                                                                            
+                    <form class="login-form-container">
                         <div>
-                            <label htmlFor="name">
-                                Name
-                            </label>
                             <input
                                 type="name"
                                 label="name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}  
                                 required                                    
-                                placeholder="Name"                                
+                                placeholder="Name"
+                                class="input-field mt-8"                                
                             />
                         </div>                                                                                            
                         <div>
-                            <label htmlFor="email-address">
-                                Email address
-                            </label>
                             <input
                                 type="email"
                                 label="Email address"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}  
                                 required                                    
-                                placeholder="Email address"                                
+                                placeholder="Email address"
+                                class="input-field"                                
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="password">
-                                Password
-                            </label>
                             <input
                                 type="password"
                                 label="Create password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)} 
                                 required                                 
-                                placeholder="Password"              
+                                placeholder="Password"
+                                class="input-field"              
                             />
                         </div>                                             
 
                         <button
                             type="submit" 
-                            onClick={onSubmit}                        
+                            onClick={onSubmit}
+                            class="login-button"                        
                         >  
                             Sign up                                
                         </button>
 
                     </form>
-                    {message && <p>{message}</p>}
+                    {message && <p class="message">{message}</p>}
 
-                    <p>
-                        Already have an account?{' '}
+                    <p className="signup-link">
                         <NavLink to="/login" >
-                            Sign in
+                            Already have an account? Sign in
                         </NavLink>
-                    </p>                   
+                    </p>  
+                    </div>                 
                 </div>
             </div>
         </section>

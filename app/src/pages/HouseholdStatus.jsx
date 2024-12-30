@@ -3,6 +3,9 @@ import { useLocation } from 'react-router-dom';
 import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchDataOnce } from "../firebaseRoutes";
+import logo from './images/logo.png'
+import leaf1 from './images/leaf1.png'
+import leaf2 from './images/leaf2.png'
 
 const HouseholdStatus = () => {
   const navigate = useNavigate();
@@ -39,18 +42,22 @@ const HouseholdStatus = () => {
 
 
   return (
-    <div className="container">
-      {userInfo ? (
-        <div>
-          <h1>Hi {userInfo.name}! It seems you are not in a Household yet. Please either Create or Join a Household</h1> 
-        </div>
-        ) : (
-        <p>Loading user information...</p>
-        )}
-      
-      <button onClick={() => navigate("/create", { state: { userID: userID }})}>Create Household</button>
-      <button onClick={() => navigate("/join", { state: { userID: userID }})}>Join Household</button>
-    </div>
+    <main>
+      <img src={leaf1} alt="leaf1" class="top-left-image"/>
+      <img src={leaf2} alt="leaf1" class="bottom-right-image"/>
+      <div className="login-container">
+        {userInfo ? (
+          <div>
+            <h1>Hi {userInfo.name}! It seems you are not in a Household yet. Please either Create or Join a Household</h1> 
+          </div>
+          ) : (
+          <p>Loading user information...</p>
+          )}
+        
+        <button onClick={() => navigate("/create", { state: { userID: userID }})}>Create Household</button>
+        <button onClick={() => navigate("/join", { state: { userID: userID }})}>Join Household</button>
+      </div>
+    </main>
   );
 };
 

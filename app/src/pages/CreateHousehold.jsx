@@ -4,8 +4,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { auth, database } from "../firebase";
 import { ref, set } from "firebase/database";
 import { createHousehold, joinHousehold} from "../firebaseRoutes";
-
-// import "./CreateHousehold.css";
+import leaf1 from './images/leaf1.png'
+import leaf2 from './images/leaf2.png'
 
 const CreateHousehold = () => {
   const navigate = useNavigate();
@@ -35,6 +35,9 @@ const CreateHousehold = () => {
   }
 
   return (
+    <main>
+      <img src={leaf1} alt="leaf1" class="top-left-image"/>
+      <img src={leaf2} alt="leaf1" class="bottom-right-image"/>
     <div className="create-household-container">
       <h2>Create Household</h2>
       <input
@@ -52,6 +55,7 @@ const CreateHousehold = () => {
       </button>
       {inviteCode && <p>Invite Code: {inviteCode}</p>}
     </div>
+    </main>
   );
 };
 

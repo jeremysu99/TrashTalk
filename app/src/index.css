@@ -66,6 +66,9 @@
 .message {
   font-size: 0.875rem;
   margin-top: 1rem;
+  font-optical-sizing: auto;
+  font-style: normal;
+  color: #284E13;
 }
 
 /* Link */
@@ -79,3 +82,18 @@
     color: #2f6c19;
 }
 
+.top-left-image {
+    position: absolute; /* Positions the image within the container */
+    top: 0; /* Aligns the image to the top */
+    left: 0; /* Aligns the image to the left */
+    width: 200px; /* Set the desired width */
+    height: auto; /* Maintains the aspect ratio */
+}
+
+.bottom-right-image {
+    position: absolute; /* Positions the image within the container */
+    bottom: 0; /* Aligns the image to the bottom */
+    right: 0; /* Aligns the image to the right */
+    width: 200px; /* Set the desired width */
+    height: auto; /* Maintains the aspect ratio */
+}
