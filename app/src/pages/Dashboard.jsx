@@ -11,6 +11,7 @@ import { getMessaging } from "firebase/messaging";
 const Dashboard = () => {
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState(null);
+    const [savedUser, setUser] = useState(null);
     const [houseInfo, setHouseInfo] = useState(null);
     const [houseCode, setHouseCode] = useState(null);
     const [trashIndex, setTrashIndex] = useState(null);
@@ -26,10 +27,20 @@ const Dashboard = () => {
         localStorage.setItem('isFull', JSON.stringify(isFull));
     }, [isFull]);
 
+    useEffect(() => {
+        const savedUser = JSON.parse(localStorage.getItem('user'));
+        if (savedUser) {
+            setUser(savedUser); // Updates the component's state
+        }
+    }, []);
+
     useEffect(()=>{   
         const fetchUserData = async (userID) => {
             try {
                 const info = await fetchDataOnce(`/users/${userID}`)
+                // Set local storage to keep user signed in
+                localStorage.setItem('user', JSON.stringify(info));
+                
                 setUserInfo(info);
                 const code = info.household
                 setHouseCode(code)
@@ -86,6 +97,8 @@ const Dashboard = () => {
     const handleLogout = () => {               
         signOut(auth).then(() => {
         // Sign-out successful.
+            localStorage.removeItem('user');
+            setUser(null);
             navigate("/");
             console.log("Signed out successfully")
         }).catch((error) => {
@@ -121,14 +134,14 @@ const Dashboard = () => {
     return (
  
         <nav>
-            <div class="bg-[#FFFBF1] w-screen h-screen">
+            <div className="bg-[#FFFBF1] w-screen h-screen">
                 {userInfo ? (
                 <div>
                     <h1>Welcome to your dashboard {userInfo.name}!</h1>
                     {/* Add more fields as needed */}
                 </div> 
                 ) : (
-                <p class="message">Loading user information...</p>
+                <p className="message">Loading user information...</p>
                 )}
                 {houseInfo ? (
                 <div>
@@ -138,12 +151,12 @@ const Dashboard = () => {
                     {/* Add more fields as needed */}
                 </div>
                 ) : (
-                <p class="message">Loading user information...</p>
+                <p className="message">Loading user information...</p>
                 )}
                 <div>
                     <h1>Trash Level Monitor</h1>
                     {!trashLevel ? (
-                        <p class="message">Loading trash level...</p>
+                        <p className="message">Loading trash level...</p>
                     ) : (
                         <>
                             <TrashVisualizer trashLevel={trashLevel} trashWeight={trashWeight} />
@@ -155,10 +168,10 @@ const Dashboard = () => {
                 </div>
                 <div className="footer fixed bottom-0 w-full bg-white flex justify-around py-4 shadow-lg">
                     <button onClick={handleViewHouseholdMembers} className="footer-button px-6 py-2  text-white rounded hover:bg-[#DBEAD5]">
-                        <img src={house} class="w-8"/>
+                        <img src={house} className="w-8"/>
                     </button>
                     <button onClick={handleLogout} className="footer-button px-6 py-2 text-white rounded hover:bg-[#DBEAD5]">
-                        <img src={logout} class="w-8"/>
+                        <img src={logout} className="w-8"/>
                     </button>
                 </div>
             </div>

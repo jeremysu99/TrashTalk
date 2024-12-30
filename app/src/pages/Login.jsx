@@ -15,7 +15,14 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const[message,setMessage]=useState('')
 
-
+    // Check localStorage for an existing user
+    useEffect(() => {
+        const savedUser = localStorage.getItem('user');
+        if (savedUser) {
+            console.log('User found in localStorage, redirecting to Dashboard...');
+            navigate('/dashboard');
+        }
+    }, [navigate]);
 
     const onLogin = async (e) => {
         e.preventDefault();
@@ -52,17 +59,17 @@ const Login = () => {
     return(
         <>
             <main >        
-                <img src={leaf1} alt="leaf1" class="top-left-image"/>
-                <img src={leaf2} alt="leaf1" class="bottom-right-image"/>
-                <section class="login-container">
-                    <div class="login-form">
-                        <div class="logo-container">
-                            <img src={logo} alt="TrashTalk" class="w-24 h-auto"/>
+                <img src={leaf1} alt="leaf1" className="top-left-image"/>
+                <img src={leaf2} alt="leaf1" className="bottom-right-image"/>
+                <section className="login-container">
+                    <div className="login-form">
+                        <div className="logo-container">
+                            <img src={logo} alt="TrashTalk" className="w-24 h-auto"/>
                         </div>
-                        <div class="px-16">                                           
-                        <h2 class="syne-login">TrashTalk</h2>                       
-                        {successMessage && <p class="message">{successMessage}</p>}
-                        <form class="login-form-container">                                              
+                        <div className="px-16">                                           
+                        <h2 className="syne-login">TrashTalk</h2>                       
+                        {successMessage && <p className="message">{successMessage}</p>}
+                        <form className="login-form-container">                                              
                                 <input
                                     id="email-address"
                                     name="email"
@@ -70,7 +77,7 @@ const Login = () => {
                                     required                                                                                
                                     placeholder="Email address"
                                     onChange={(e)=>setEmail(e.target.value)}
-                                    class="input-field mt-4"
+                                    className="input-field mt-4"
                                 />
 
                                 <input
@@ -80,18 +87,18 @@ const Login = () => {
                                     required                                                                                
                                     placeholder="Password"
                                     onChange={(e)=>setPassword(e.target.value)}
-                                    class="input-field"
+                                    className="input-field"
                                 />
                             
                             <button                                    
                                 onClick={onLogin}
-                                class="login-button"                                    
+                                className="login-button"                                    
                             >      
                                 Login                                                                  
                             </button>
                         </form>
                         
-                        {message && <p class="message">{message}</p>}
+                        {message && <p className="message">{message}</p>}
                         
                         <p className="signup-link">
                             {' '}
