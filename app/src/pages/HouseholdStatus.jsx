@@ -44,8 +44,8 @@ const HouseholdStatus = () => {
 
   return (
     <main>
-      <img src={leaf1} alt="leaf1" class="top-left-image"/>
-      <img src={leaf2} alt="leaf1" class="bottom-right-image"/>
+      <img src={leaf1} alt="leaf1" className="top-left-image"/>
+      <img src={leaf2} alt="leaf1" className="bottom-right-image"/>
       <div className="div-container">
         {userInfo ? (
           <div>

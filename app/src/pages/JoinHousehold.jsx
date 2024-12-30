@@ -31,8 +31,8 @@ const JoinHousehold = () => {
   }
   return (
     <main>
-      <img src={leaf1} alt="leaf1" class="top-left-image"/>
-      <img src={leaf2} alt="leaf1" class="bottom-right-image"/>
+      <img src={leaf1} alt="leaf1" className="top-left-image"/>
+      <img src={leaf2} alt="leaf1" className="bottom-right-image"/>
     <div className="flex justify-center items-center h-screen w-full">
       <h2 className>Join Household </h2>
       <input

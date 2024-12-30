@@ -36,17 +36,17 @@ const Signup = () => {
 
   return (
     <main >  
-        <img src={leaf1} alt="leaf1" class="top-left-image"/>
-        <img src={leaf2} alt="leaf1" class="bottom-right-image"/>      
-        <section class="login-container">
-            <div class="login-form">
+        <img src={leaf1} alt="leaf1" className="top-left-image"/>
+        <img src={leaf2} alt="leaf1" className="bottom-right-image"/>      
+        <section className="login-container">
+            <div className="login-form">
                 <div>
                     <div class="logo-container">
-                            <img src={logo} alt="TrashTalk" class="w-24 h-auto"/>
+                            <img src={logo} alt="TrashTalk" className="w-24 h-auto"/>
                     </div>
-                    <div class="px-16">                  
-                    <h2 class="syne-login">TrashTalk</h2>                                                                            
-                    <form class="login-form-container">
+                    <div className="px-16">                  
+                    <h2 className="syne-login">TrashTalk</h2>                                                                            
+                    <form className="login-form-container">
                         <div>
                             <input
                                 type="name"
@@ -55,7 +55,7 @@ const Signup = () => {
                                 onChange={(e) => setName(e.target.value)}  
                                 required                                    
                                 placeholder="Name"
-                                class="input-field mt-4"                                
+                                className="input-field mt-4"                                
                             />
                         </div>                                                                                            
                         <div>
@@ -66,7 +66,7 @@ const Signup = () => {
                                 onChange={(e) => setEmail(e.target.value)}  
                                 required                                    
                                 placeholder="Email address"
-                                class="input-field"                                
+                                className="input-field"                                
                             />
                         </div>
 
@@ -78,20 +78,20 @@ const Signup = () => {
                                 onChange={(e) => setPassword(e.target.value)} 
                                 required                                 
                                 placeholder="Password"
-                                class="input-field"              
+                                className="input-field"              
                             />
                         </div>                                             
 
                         <button
                             type="submit" 
                             onClick={onSubmit}
-                            class="login-button"                        
+                            className="login-button"                        
                         >  
                             Sign up                                
                         </button>
 
                     </form>
-                    {message && <p class="message">{message}</p>}
+                    {message && <p className="message">{message}</p>}
 
                     <p className="signup-link">
                         <NavLink to="/login" >
