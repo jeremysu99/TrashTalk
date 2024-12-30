@@ -6,6 +6,7 @@ import { fetchDataOnce } from "../firebaseRoutes";
 import logo from './images/logo.png'
 import leaf1 from './images/leaf1.png'
 import leaf2 from './images/leaf2.png'
+import '../index.css';
 
 const HouseholdStatus = () => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ const HouseholdStatus = () => {
     <main>
       <img src={leaf1} alt="leaf1" class="top-left-image"/>
       <img src={leaf2} alt="leaf1" class="bottom-right-image"/>
-      <div className="login-container">
+      <div className="div-container">
         {userInfo ? (
           <div>
             <h1>Hi {userInfo.name}! It seems you are not in a Household yet. Please either Create or Join a Household</h1> 
@@ -53,9 +54,9 @@ const HouseholdStatus = () => {
           ) : (
           <p>Loading user information...</p>
           )}
+          <button className="login-button" onClick={() => navigate("/create", { state: { userID: userID }})}>Create Household</button>
+          <button className="login-button" onClick={() => navigate("/join", { state: { userID: userID }})}>Join Household</button>
         
-        <button onClick={() => navigate("/create", { state: { userID: userID }})}>Create Household</button>
-        <button onClick={() => navigate("/join", { state: { userID: userID }})}>Join Household</button>
       </div>
     </main>
   );

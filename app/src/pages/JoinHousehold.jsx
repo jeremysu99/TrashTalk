@@ -33,14 +33,14 @@ const JoinHousehold = () => {
     <main>
       <img src={leaf1} alt="leaf1" class="top-left-image"/>
       <img src={leaf2} alt="leaf1" class="bottom-right-image"/>
-    <div className="join-household-container">
-      <h2>Join Household</h2>
+    <div className="flex justify-center items-center h-screen w-full">
+      <h2 className>Join Household </h2>
       <input
         type="text"
-        placeholder="Enter invite code"
+        placeholder=" Enter invite code"
         value={inviteCode}
         onChange={(e) => setInviteCode(e.target.value)}
-        className="household-input"
+        className="p-2 text-sm w-0.5/5 max-w-md border-2 border-gray-500 rounded-md"
       />
       <button onClick={join} className="join-btn">
         Join

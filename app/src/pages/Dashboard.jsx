@@ -6,6 +6,7 @@ import { listenToData, fetchDataOnce, setValueAtPath } from '../firebaseRoutes';
 import TrashVisualizer from '../components/TrashVisualizer';
 import house from './images/house.png'
 import logout from './images/logout.png'
+import { getMessaging } from "firebase/messaging";
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -96,7 +97,7 @@ const Dashboard = () => {
         if(userInfo && userInfo.household){
             navigate("/view",{state:{ householdCode: userInfo.household}})
         }else{
-            console.error("Household infor is not available")
+            console.error("Household information is not available")
         }
     }
 
