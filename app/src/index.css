@@ -1,20 +1,81 @@
-body {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+.login-container {
   background-color: #DBEAD5;
   display: flex;
   min-height: 100vh;
   align-items: center;
   justify-content: center;
+}
 
 /* Container for the form */
 .login-form {
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  max-width: 48rem;
+}
+/* Logo container */
+.logo-container{
+    display: flex;
+    justify-content: center;
+}
+/* Heading */
+.syne-login {
+    font-family: "Syne", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    color: #284E13;
+    font-weight: bold;
+    font-size: 2.5rem;
+}
+/* Form container */
+.login-form-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+/* Input Fields */
+.input-field {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  width: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Button */
+.login-button {
+  background-color: #284E13;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
 }
+
+.login-button:hover {
+  background-color: #2f6c19;
+}
+
+/* Error or Success Messages */
+.message {
+  font-size: 0.875rem;
+  margin-top: 1rem;
+}
+
+/* Link */
+.signup-link {
+  font-size: 0.875rem;
+  text-align: center;
+  color: #284E13;
+}
+
+.signup-link:hover {
+    color: #2f6c19;
+}
+
