@@ -1,4 +1,4 @@
-import { getDatabase, ref, get, onValue, set, push } from "firebase/database";
+import { getDatabase, ref, get, onValue, set, push, runTransaction } from "firebase/database";
 
 import { database } from "./firebase";
 
@@ -68,11 +68,19 @@ export const joinHousehold = async (userID, houseID, name) => {
     const houseRef = ref(database, "households/" + houseID + "/housemates");
     const userRef = ref(database, "users/" + userID + "/household");
     const people = await fetchDataOnce("households/" + houseID + "/housemates");
+    const numberRef=ref(database,"household/" + houseID + "/numberOfPeople");
     // Append the new userID to the housemates list
     people.push([name, userID]);
     // Update the housemates array in the database
     await set(houseRef, people);
     await set(userRef, houseID);
+    //update number of people
+    const currNumberCheck=get(numberRef);
+    const currNumber =currNumberCheck.exists()?currNumberCheck.val():0;
+    await runTransaction(numberRef, (currentNumber) => {
+      return (currentNumber || 0 ) + 1;
+    })
+
     console.log("User successfully added to the household!");
   } catch (error) {
     console.error("Error joining the household:", error);
