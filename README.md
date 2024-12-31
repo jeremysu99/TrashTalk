@@ -1,7 +1,7 @@
 # TrashTalk
 
 ## Overview
-- Web application with mobile compatibility through aimed to streamline communication between housemates over trash disposal
+- Progressive Web App (PWA) aimed to streamline communication between housemates over trash disposal
 
 - IoT-based Arduino R4 with ESP-32 WiFi module allows connection to Firebase, while ultraonic JSN-SR04T sensor and HX711 load cells are able to detect changes in trash level + weight and constantly update remote database
 
