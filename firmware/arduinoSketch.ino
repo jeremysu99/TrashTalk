@@ -22,6 +22,8 @@ float totalDistance = 0;
 int weightCounts = 0;
 int distanceCounts = 0;
 
+const houseCode = "98WD71" // CHANGE AS NECESSARY
+
 float duration, distance;
 int currIndex, roomCount;
 //const char* ssid = "RESNET-GUEST-DEVICE";
@@ -96,7 +98,7 @@ void loop() {
       float averageWeight = totalWeight / weightCounts;
       // Every 20 seconds update the average weight
       if (t > lastWeightTime + 20000) {
-        fb.setFloat("households/98WD71/trashWeight", averageWeight);
+        fb.setFloat("households/", houseCode, "/trashWeight", averageWeight);
         totalWeight = i;
         weightCounts = 1;
         Serial.println("Updated weight");
@@ -142,9 +144,9 @@ void loop() {
   float averageDistance = totalDistance / distanceCounts;
 
   if (millis() > lastDistanceTime + 20000){
-    currIndex = fb.getInt("households/98WD71/currTrashIndex");
-    roomCount = fb.getInt("households/98WD71/numberOfPeople");
-    fb.setFloat("households/98WD71/trashLevel", averageDistance);
+    currIndex = fb.getInt("households/", houseCode, "/currTrashIndex");
+    roomCount = fb.getInt("households/", houseCode, "/numberOfPeople");
+    fb.setFloat("households/", houseCode, "/trashLevel", averageDistance);
     totalDistance = distance;
     distanceCounts = 1;
   }
