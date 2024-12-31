@@ -13,7 +13,7 @@ const ViewHousehold = () => {
     const navigate = useNavigate();
 
     const {householdCode}=location.state || {};
-
+    const [houseInfo, setHouseInfo] = useState(null);
     const[members,setMembers]=useState([]);
     const[loading, setLoading] = useState(true);
 
@@ -27,7 +27,7 @@ const ViewHousehold = () => {
                 }
                 const householdData = await fetchDataOnce(`/households/${householdCode}`)
                 console.log("data: ",householdData);
-
+                setHouseInfo(householdData);
                 const housemateIds=householdData.housemates.flat();
                 const housemateDetails=[];
 
@@ -65,10 +65,10 @@ const ViewHousehold = () => {
 
 
     return(
-        <div>
-            <h2>Household  Members</h2>
+        <div className="bg-[#FFFBF1] w-screen h-screen flex flex-col items-center justify-center">
+            <h1 className="syne-login">Whose Turn?</h1>
             { loading ? (
-                <p>Loading Information..</p>
+                <p className="message">Loading Information..</p>
             ): (
              <ul>
                 {members.map((members, index) => (
@@ -77,6 +77,14 @@ const ViewHousehold = () => {
                     </li>
                 ))}
              </ul>
+            )}
+            {houseInfo ? (
+            <div>
+                <p><strong>Whose Turn it is Next:</strong> {houseInfo.housemates[houseInfo.currTrashIndex][0] || "Not assigned"}</p>
+                {/* Add more fields as needed */}
+            </div>
+            ) : (
+            <p className="message">Loading housemates' information...</p>
             )}
             <div className="footer fixed bottom-0 w-full bg-white flex justify-around py-4 shadow-lg">
                     <button className="footer-button px-6 py-2  text-white rounded hover:bg-[#DBEAD5]">
