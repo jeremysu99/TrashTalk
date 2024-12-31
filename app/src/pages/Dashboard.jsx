@@ -6,6 +6,7 @@ import { listenToData, fetchDataOnce, setValueAtPath } from '../firebaseRoutes';
 import TrashVisualizer from '../components/TrashVisualizer';
 import house from './images/house.png'
 import logout from './images/logout.png'
+import trashGreen from './images/trashGreen.png'
 import { getMessaging } from "firebase/messaging";
 
 const Dashboard = () => {
@@ -40,7 +41,7 @@ const Dashboard = () => {
                 const info = await fetchDataOnce(`/users/${userID}`)
                 // Set local storage to keep user signed in
                 localStorage.setItem('user', JSON.stringify(info));
-                
+
                 setUserInfo(info);
                 const code = info.household
                 setHouseCode(code)
@@ -161,14 +162,15 @@ const Dashboard = () => {
                         <>
                             <TrashVisualizer trashLevel={trashLevel} trashWeight={trashWeight} />
                         </>
-                        
                     )}
-
                     {warningMessage && <div>{warningMessage}</div>}
                 </div>
                 <div className="footer fixed bottom-0 w-full bg-white flex justify-around py-4 shadow-lg">
                     <button onClick={handleViewHouseholdMembers} className="footer-button px-6 py-2  text-white rounded hover:bg-[#DBEAD5]">
                         <img src={house} className="w-8"/>
+                    </button>
+                    <button className="footer-button px-6 py-2  text-white rounded hover:bg-[#DBEAD5]">
+                        <img src={trashGreen} className="w-8"/>
                     </button>
                     <button onClick={handleLogout} className="footer-button px-6 py-2 text-white rounded hover:bg-[#DBEAD5]">
                         <img src={logout} className="w-8"/>

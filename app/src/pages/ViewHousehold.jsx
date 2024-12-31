@@ -1,8 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { database } from '../firebase';
+import { database, auth } from '../firebase';
 import { ref, get} from "firebase/database";
 import { useLocation, useNavigate } from "react-router-dom";
 import { fetchDataOnce } from '../firebaseRoutes';
+import { signOut } from "firebase/auth";
+import logout from './images/logout.png'
+import trashcan from './images/trashcan.png'
+import houseGreen from './images/houseGreen.png'
 
 const ViewHousehold = () => {
     const location=useLocation();
@@ -44,11 +48,20 @@ const ViewHousehold = () => {
         fetchMembers();
     }, [householdCode]);
 
-    const navBack = () => {
-        navigate("/dashboard");
+    const handleLogout = () => {               
+        signOut(auth).then(() => {
+        // Sign-out successful.
+            localStorage.removeItem('user');
+            navigate("/");
+            console.log("Signed out successfully")
+        }).catch((error) => {
+        // An error happened.
+        });
     }
 
-
+    const handleDashboard=() => {
+        navigate("/dashboard")
+    }
 
 
     return(
@@ -65,9 +78,18 @@ const ViewHousehold = () => {
                 ))}
              </ul>
             )}
-            <button onClick={navBack}>
-             Go Back
-            </button>
+            <div className="footer fixed bottom-0 w-full bg-white flex justify-around py-4 shadow-lg">
+                    <button className="footer-button px-6 py-2  text-white rounded hover:bg-[#DBEAD5]">
+                        <img src={houseGreen} className="w-8"/>
+                    </button>
+                        
+                    <button onClick={handleDashboard} className="footer-button px-6 py-2  text-white rounded hover:bg-[#DBEAD5]">
+                        <img src={trashcan} className="w-8"/>
+                    </button>
+                    <button onClick={handleLogout} className="footer-button px-6 py-2 text-white rounded hover:bg-[#DBEAD5]">
+                        <img src={logout} className="w-8"/>
+                    </button>
+            </div>
         </div>
     )
 }
