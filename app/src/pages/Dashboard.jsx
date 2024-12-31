@@ -3,7 +3,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from '../firebase';
 import { useLocation, useNavigate} from 'react-router-dom'
 import { listenToData, fetchDataOnce, setValueAtPath } from '../firebaseRoutes';
-import TrashVisualizer from '../components/TrashVisualizer';
+import TrashVisualizer from '../components/TrashVisualizer.jsx';
 import house from './images/house.png'
 import logout from './images/logout.png'
 import trashGreen from './images/trashGreen.png'
@@ -65,10 +65,10 @@ const Dashboard = () => {
                     } else {
                         setWarningMessage(`Trash is Full! It's ${person}'s turn to take out the trash!`);
                     }
-                } else {
+                } else if (data.trashLevel >= 750){
                     setFull(false)
                     if (userInfo.name === person) {
-                        setWarningMessage("Trash is not Full, but you must take it out soon!");
+                        setWarningMessage("Trash is not Full, but you must take it out next!");
                     } else {
                         setWarningMessage(`Trash is not Full. It's ${person}'s turn to take out the trash next.`);
                     }
@@ -135,27 +135,16 @@ const Dashboard = () => {
     return (
  
         <nav>
-            <div className="bg-[#FFFBF1] w-screen h-screen">
-                {userInfo ? (
+            <div className="bg-[#FFFBF1] w-screen h-screen flex flex-col items-center justify-center">
+                {houseInfo ? (
                 <div>
-                    <h1>Welcome to your dashboard {userInfo.name}!</h1>
+                    <h1 className="syne-login">{houseInfo.name}'s Trash</h1>
                     {/* Add more fields as needed */}
                 </div> 
                 ) : (
-                <p className="message">Loading user information...</p>
-                )}
-                {houseInfo ? (
-                <div>
-                    <p><strong>Household Number:</strong> {userInfo.household || "Not assigned"}</p>
-                    <p><strong>Household Name:</strong> {houseInfo.name || "Not assigned"}</p>
-                    <p><strong>Whose Turn it is Next:</strong> {houseInfo.housemates[houseInfo.currTrashIndex][0] || "Not assigned"}</p>
-                    {/* Add more fields as needed */}
-                </div>
-                ) : (
-                <p className="message">Loading user information...</p>
+                <p className="message">Loading house information...</p>
                 )}
                 <div>
-                    <h1>Trash Level Monitor</h1>
                     {!trashLevel ? (
                         <p className="message">Loading trash level...</p>
                     ) : (
@@ -163,7 +152,7 @@ const Dashboard = () => {
                             <TrashVisualizer trashLevel={trashLevel} trashWeight={trashWeight} />
                         </>
                     )}
-                    {warningMessage && <div>{warningMessage}</div>}
+                    {warningMessage && <div className="mt-8">{warningMessage}</div>}
                 </div>
                 <div className="footer fixed bottom-0 w-full bg-white flex justify-around py-4 shadow-lg">
                     <button onClick={handleViewHouseholdMembers} className="footer-button px-6 py-2  text-white rounded hover:bg-[#DBEAD5]">

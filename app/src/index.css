@@ -33,6 +33,15 @@
     font-weight: bold;
     font-size: 2.5rem;
 }
+/* Heading */
+.syne-trash {
+    font-family: "Syne", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    color: #284E13;
+    font-weight: medium;
+    font-size: 1.25rem;
+}
 /* Form container */
 .login-form-container{
     display: flex;
