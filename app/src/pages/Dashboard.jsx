@@ -65,12 +65,29 @@ const Dashboard = () => {
                     } else {
                         setWarningMessage(`Trash is Full! It's ${person}'s turn to take out the trash!`);
                     }
-                } else if (data.trashLevel >= 750){
-                    setFull(false)
+                } else if (data.trashLevel >= 750 && data.trashWeight < 3){
+                    if (!isFull)
+                        setFull(false)
                     if (userInfo.name === person) {
-                        setWarningMessage("Trash is not Full, but you must take it out next!");
+                        setWarningMessage("Trash is not Full, but you must take it out next time!");
                     } else {
                         setWarningMessage(`Trash is not Full. It's ${person}'s turn to take out the trash next.`);
+                    }
+                }
+                else{
+                    if (isFull){
+                        if (userInfo.name === person) {
+                            setWarningMessage("Trash is Full! It's your turn to take out the trash!");
+                        } else {
+                            setWarningMessage(`Trash is Full! It's ${person}'s turn to take out the trash!`);
+                        }
+                    }
+                    else{
+                        if (userInfo.name === person) {
+                            setWarningMessage("Trash is not Full, but you must take it out next time!");
+                        } else {
+                            setWarningMessage(`Trash is not Full. It's ${person}'s turn to take out the trash next.`);
+                        }
                     }
                 }
 
@@ -115,38 +132,38 @@ const Dashboard = () => {
         }
     }
 
-
     // If the fullness of the trash changes, update the previousFullRef
     useEffect(() => {
         if (isFull)
             previousFullRef.current = isFull
     }, [isFull])
+
     // Detect changes in `isFull` and handle when trash is no longer full
     useEffect(() => {
-        if (previousFullRef.current && trashLevel > 250) {
+        if (previousFullRef.current && trashLevel > 750 && trashWeight < 4) {
             // Only update the index if the current one has changed
             if (trashLevel > previousTrashLevelRef.current) {
                 setValueAtPath(`/households/${houseCode}/currTrashIndex`, (trashIndex + 1) % houseInfo.numberOfPeople);
                 setTrashIndex((prevIndex) => (prevIndex + 1) % houseInfo.numberOfPeople);
             }
         }
-    }, [previousFullRef, trashLevel]);
+    }, [previousFullRef, trashLevel, trashWeight]);
 
     return (
  
         <nav>
-            <div className="bg-[#FFFBF1] w-screen h-screen flex flex-col items-center justify-center">
+            <div className="full-screen-container">
                 {houseInfo ? (
                 <div>
-                    <h1 className="syne-login">{houseInfo.name}'s Trash</h1>
+                    <h1 className="syne-title">{houseInfo.name}'s Trash</h1>
                     {/* Add more fields as needed */}
                 </div> 
                 ) : (
-                <p className="message">Loading house information...</p>
+                <p className="message font-semibold text-xl">Loading house information...</p>
                 )}
                 <div>
                     {!trashLevel ? (
-                        <p className="message">Loading trash level...</p>
+                        <p className="message font-semibold text-xl">Loading trash level...</p>
                     ) : (
                         <>
                             <TrashVisualizer trashLevel={trashLevel} trashWeight={trashWeight} />
@@ -155,14 +172,14 @@ const Dashboard = () => {
                     {warningMessage && <div className="mt-8">{warningMessage}</div>}
                 </div>
                 <div className="footer fixed bottom-0 w-full bg-white flex justify-around py-4 shadow-lg">
-                    <button onClick={handleViewHouseholdMembers} className="footer-button px-6 py-2  text-white rounded hover:bg-[#DBEAD5]">
+                    <button onClick={handleViewHouseholdMembers} className="footer-button">
                         <img src={house} className="w-8"/>
                     </button>
-                    <button className="footer-button px-6 py-2  text-white rounded hover:bg-[#DBEAD5]">
+                    <button className="footer-button px-6 py-2">
                         <img src={trashGreen} className="w-8"/>
                     </button>
-                    <button onClick={handleLogout} className="footer-button px-6 py-2 text-white rounded hover:bg-[#DBEAD5]">
-                        <img src={logout} className="w-8"/>
+                    <button onClick={handleLogout} className="footer-button">
+                        <img src={logout} className="w-10"/>
                     </button>
                 </div>
             </div>

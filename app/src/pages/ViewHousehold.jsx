@@ -7,6 +7,7 @@ import { signOut } from "firebase/auth";
 import logout from './images/logout.png'
 import trashcan from './images/trashcan.png'
 import houseGreen from './images/houseGreen.png'
+import { listenToData } from '../firebaseRoutes';
 
 const ViewHousehold = () => {
     const location=useLocation();
@@ -16,6 +17,7 @@ const ViewHousehold = () => {
     const [houseInfo, setHouseInfo] = useState(null);
     const[members,setMembers]=useState([]);
     const[loading, setLoading] = useState(true);
+    const [currPerson, setPerson] = useState(null);
 
     useEffect(()=>{
         const fetchMembers = async () => {
@@ -48,6 +50,19 @@ const ViewHousehold = () => {
         fetchMembers();
     }, [householdCode]);
 
+    useEffect(() => {
+        const handleDataUpdate = (data) => {
+            if (data !== null) {
+                setPerson(data.housemates[data.currTrashIndex][0])
+            } else {
+                console.log("No data found at this path.");
+            }
+        }
+        if (householdCode) {
+            listenToData(`/households/${householdCode}`, handleDataUpdate);
+        }
+    }, [householdCode])
+    
     const handleLogout = () => {               
         signOut(auth).then(() => {
         // Sign-out successful.
@@ -63,39 +78,33 @@ const ViewHousehold = () => {
         navigate("/dashboard")
     }
 
-
     return(
-        <div className="bg-[#FFFBF1] w-screen h-screen flex flex-col items-center justify-center">
-            <h1 className="syne-login">Whose Turn?</h1>
+        <div className="full-screen-container">
+            <h1 className="syne-title">Whose Turn Is It?</h1>
             { loading ? (
-                <p className="message">Loading Information..</p>
+                <p className="message text-xl font-semibold">Loading Information..</p>
             ): (
-             <ul>
-                {members.map((members, index) => (
-                    <li key={index}>
-                        {members.name}
-                    </li>
+            <div className="grid">
+                {members.map((member, index) => (
+                    <div 
+                        key={index} 
+                        className={`member-card ${member.name === currPerson ? 'turn-card' : ''}`}
+                    >
+                        <p className="text-2xl font-semibold">{member.name}</p>
+                    </div>
                 ))}
-             </ul>
-            )}
-            {houseInfo ? (
-            <div>
-                <p><strong>Whose Turn it is Next:</strong> {houseInfo.housemates[houseInfo.currTrashIndex][0] || "Not assigned"}</p>
-                {/* Add more fields as needed */}
             </div>
-            ) : (
-            <p className="message">Loading housemates' information...</p>
             )}
             <div className="footer fixed bottom-0 w-full bg-white flex justify-around py-4 shadow-lg">
-                    <button className="footer-button px-6 py-2  text-white rounded hover:bg-[#DBEAD5]">
+                    <button className="footer-button">
                         <img src={houseGreen} className="w-8"/>
                     </button>
                         
-                    <button onClick={handleDashboard} className="footer-button px-6 py-2  text-white rounded hover:bg-[#DBEAD5]">
+                    <button onClick={handleDashboard} className="footer-button">
                         <img src={trashcan} className="w-8"/>
                     </button>
-                    <button onClick={handleLogout} className="footer-button px-6 py-2 text-white rounded hover:bg-[#DBEAD5]">
-                        <img src={logout} className="w-8"/>
+                    <button onClick={handleLogout} className="footer-button px-6 py-2">
+                        <img src={logout} className="w-10"/>
                     </button>
             </div>
         </div>

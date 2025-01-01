@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.full-screen-container{
+  background-color: #FFFBF1; /* Light background color */
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .login-container {
   background-color: #DBEAD5;
   display: flex;
@@ -41,6 +50,15 @@
     color: #284E13;
     font-weight: medium;
     font-size: 1.25rem;
+}
+/* Heading */
+.syne-title {
+    font-family: "Syne", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    color: #284E13;
+    font-weight: bold;
+    font-size: 2rem;
 }
 /* Form container */
 .login-form-container{
@@ -118,4 +136,56 @@
   justify-content: center; /* Center vertically */
   height: 100vh; /* Take up the full height of the viewport */
   text-align: center; /* Center text */
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 500px; /* Optional: Limits the overall width of the grid */
+    margin: 0 auto; /* Centers the grid horizontally */
+    margin-top: 4rem;
+}
+
+.member-card {
+    background-color: #f7f7f7;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Weakened shadow */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center text vertically */
+    align-items: center; /* Center text horizontally */
+    text-align: center; /* Ensure text is centered inside */
+    transition: transform 0.3s ease;
+    font-family: "Syne", serif;
+}
+
+.member-card:hover {
+    transform: scale(1.05);
+}
+
+.member-card p {
+    margin: 5px 0;
+}
+
+/* Highlight the card whose turn it is */
+.turn-card {
+    background-color: #FF6961; /* Red background */
+    color: white; /* White text for contrast */
+    box-shadow: 0px 2px 4px rgba(255, 0, 0, 0.3); /* Optional: Red shadow */
+}
+
+/* Footer Button */
+.footer-button {
+    padding: 0.5rem 1.5rem; /* Corresponds to px-6 py-2 */
+    color: white;
+    border-radius: 9999px; /* For rounded corners (equivalent to 'rounded' in Tailwind) */
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+.footer-button:hover {
+    background-color: #DBEAD5; /* Hover effect (light green background) */
 }
