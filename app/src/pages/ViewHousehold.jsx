@@ -79,6 +79,7 @@ const ViewHousehold = () => {
     }
 
     return(
+        <div>
         <div className="full-screen-container">
             <h1 className="syne-title">Whose Turn Is It?</h1>
             { loading ? (
@@ -95,7 +96,9 @@ const ViewHousehold = () => {
                 ))}
             </div>
             )}
-            <div className="footer fixed bottom-0 w-full bg-white flex justify-around py-4 shadow-lg">
+            <h1 className="syne-body mt-16">House Code: {householdCode}</h1>
+        </div>
+        <div className="footer fixed bottom-0 w-full bg-white flex justify-around py-4 shadow-lg">
                     <button className="footer-button">
                         <img src={houseGreen} className="w-8"/>
                     </button>

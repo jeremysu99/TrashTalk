@@ -69,24 +69,24 @@ const Dashboard = () => {
                     if (!isFull)
                         setFull(false)
                     if (userInfo.name === person) {
-                        setWarningMessage("Trash is not Full, but you must take it out next time!");
+                        setWarningMessage("Trash is not Full, but it's your turn!");
                     } else {
-                        setWarningMessage(`Trash is not Full. It's ${person}'s turn to take out the trash next.`);
+                        setWarningMessage(`Trash is not Full. It's ${person}'s turn.`);
                     }
                 }
                 else{
                     if (isFull){
                         if (userInfo.name === person) {
-                            setWarningMessage("Trash is Full! It's your turn to take out the trash!");
+                            setWarningMessage("Trash is Full! It's your turn!");
                         } else {
-                            setWarningMessage(`Trash is Full! It's ${person}'s turn to take out the trash!`);
+                            setWarningMessage(`Trash is Full! It's ${person}'s turn!`);
                         }
                     }
                     else{
                         if (userInfo.name === person) {
-                            setWarningMessage("Trash is not Full, but you must take it out next time!");
+                            setWarningMessage("Trash is not Full, but it's your turn!");
                         } else {
-                            setWarningMessage(`Trash is not Full. It's ${person}'s turn to take out the trash next.`);
+                            setWarningMessage(`Trash is not Full. It's ${person}'s turn.`);
                         }
                     }
                 }
@@ -169,9 +169,11 @@ const Dashboard = () => {
                             <TrashVisualizer trashLevel={trashLevel} trashWeight={trashWeight} />
                         </>
                     )}
-                    {warningMessage && <div className="mt-8">{warningMessage}</div>}
+                    {warningMessage && <div className="syne-body mt-8">{warningMessage}</div>}
                 </div>
-                <div className="footer fixed bottom-0 w-full bg-white flex justify-around py-4 shadow-lg">
+                
+            </div>
+            <div className="footer fixed bottom-0 w-full bg-white flex justify-around py-4 shadow-lg">
                     <button onClick={handleViewHouseholdMembers} className="footer-button">
                         <img src={house} className="w-8"/>
                     </button>
@@ -181,9 +183,7 @@ const Dashboard = () => {
                     <button onClick={handleLogout} className="footer-button">
                         <img src={logout} className="w-10"/>
                     </button>
-                </div>
             </div>
-
         </nav>
 
     )
