@@ -22,21 +22,15 @@ const messaging = getMessaging(app);
 export const generateToken = async () => {
     const permission = await Notification.requestPermission();
     console.log(permission)
-    if (permission == 'granted'){
-        await getToken(messaging, { vapidKey: process.env.REACT_APP_VAPID_KEY }).then((currentToken) => {
+    if (permission === 'granted'){
+        const currentToken=await getToken(messaging, { vapidKey: process.env.REACT_APP_VAPID_KEY });
             if (currentToken) {
-            // Send the token to your server and update the UI if necessary
-            // ...
                 console.log(currentToken)
             } else {
             // Show permission request UI
-            console.log('No registration token available. Request permission to generate one.');
+                console.log('No registration token available. Request permission to generate one.');
             // ...
             }
-        }).catch((err) => {
-            console.log('An error occurred while retrieving token. ', err);
-            // ...
-        });
     }
 }
 export { auth, database, messaging };
