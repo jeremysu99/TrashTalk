@@ -10,6 +10,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  top: 5%; /* Move it slightly down from the top */
+  transform: translateY(-2.5%);
 }
 .login-container {
   background-color: #DBEAD5;
@@ -59,6 +61,15 @@
     color: #284E13;
     font-weight: bold;
     font-size: 2rem;
+}
+
+.syne-body {
+    font-family: "Syne", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    color: #284E13;
+    font-weight: bold;
+    font-size: 1.25rem;
 }
 /* Form container */
 .login-form-container{
@@ -143,7 +154,7 @@
     grid-template-columns: repeat(2, 1fr); /* 2 columns */
     gap: 1.5rem;
     width: 100%;
-    max-width: 500px; /* Optional: Limits the overall width of the grid */
+    max-width: 450px; /* Optional: Limits the overall width of the grid */
     margin: 0 auto; /* Centers the grid horizontally */
     margin-top: 4rem;
 }
