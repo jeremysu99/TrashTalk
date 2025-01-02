@@ -145,7 +145,7 @@ const Dashboard = () => {
 
     // Detect changes in `isFull` and handle when trash is no longer full
     useEffect(() => {
-        if (previousFullRef.current && trashLevel > 750 && trashWeight < 4) {
+        if (previousFullRef.current && trashLevel > 750 && trashWeight < 3) {
             // Only update the index if the current one has changed
             if (trashLevel > previousTrashLevelRef.current) {
                 setValueAtPath(`/households/${houseCode}/currTrashIndex`, (trashIndex + 1) % houseInfo.numberOfPeople);

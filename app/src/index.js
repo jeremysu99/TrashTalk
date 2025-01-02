@@ -4,7 +4,17 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import './index.css'
+import { register } from './serviceWorkerRegistration'; // Import the register function
 
+// Register the service worker
+register({
+  onSuccess: (registration) => {
+      console.log("Service Worker registration successful", registration);
+  },
+  onError: (error) => {
+      console.log("Service Worker registration failed", error);
+  }
+});
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
