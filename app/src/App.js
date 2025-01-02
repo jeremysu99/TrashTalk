@@ -9,27 +9,44 @@ import JoinHousehold from "./pages/JoinHousehold";
 
 import ViewHousehold from "./pages/ViewHousehold";
 import { auth, generateToken, messaging } from "./firebase";
-import { onMessage } from "firebase/messaging"
-
+import { onMessage, getMessaging } from "firebase/messaging"
+import { setValueAtPath } from "./firebaseRoutes";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  
   useEffect(() => {
-    generateToken();
-    onMessage(messaging, (payload) => {
-      console.log(payload);
-    });
-  }, []);
-
-  useEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
           setUser(currentUser);
           setIsLoading(false);
-      });
+          if (currentUser) {
+            const userID = currentUser.uid;
+    
+            try {
+              const token = await generateToken(); // Wait for the token to be generated
+              if (token) {
+                await setValueAtPath(`/users/${userID}/fcmToken`, token); // Save token to the database
+              }
+            } catch (error) {
+              console.error("Error generating or saving token:", error);
+            }
+    
+            onMessage(messaging, (payload) => {
+              console.log("Message received:", payload);
+              // Extract the notification content
+              const notificationTitle = payload.notification.title;
+              const notificationOptions = {
+                body: payload.notification.body,
+              };
+
+              // Show the notification manually in the app (using the Notification API)
+              new Notification(notificationTitle, notificationOptions);
+            });
+          }
+      }); 
 
       return () => unsubscribe(); // Cleanup the listener
   }, []);

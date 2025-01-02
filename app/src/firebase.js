@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import { getMessaging, getToken } from "firebase/messaging";
+import { setValueAtPath } from "./firebaseRoutes";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -26,6 +27,7 @@ export const generateToken = async () => {
         const currentToken=await getToken(messaging, { vapidKey: process.env.REACT_APP_VAPID_KEY });
             if (currentToken) {
                 console.log(currentToken)
+                return currentToken
             } else {
             // Show permission request UI
                 console.log('No registration token available. Request permission to generate one.');
@@ -33,6 +35,7 @@ export const generateToken = async () => {
             }
     }
 }
+
 export { auth, database, messaging };
 export default app;
 

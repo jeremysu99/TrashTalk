@@ -1,6 +1,23 @@
 import { getDatabase, ref, get, onValue, set, push, runTransaction } from "firebase/database";
-
 import { database } from "./firebase";
+
+// Used to send notifications using Firebase functions
+export const sendNotification = async (fcmToken, title, body) => {
+  const response = await fetch('https://us-central1-trashtalk-453d2.cloudfunctions.net/sendNotification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      fcmToken: fcmToken,
+      title: title,
+      body: body,
+    }),
+  });
+
+  const result = await response.json();
+  console.log(result);
+};
 
 // Used to read data once (best for users and curr user index)
 export const fetchDataOnce = async (path) => {

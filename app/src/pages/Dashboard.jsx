@@ -7,7 +7,7 @@ import TrashVisualizer from '../components/TrashVisualizer.jsx';
 import house from './images/house.png'
 import logout from './images/logout.png'
 import trashGreen from './images/trashGreen.png'
-import { getMessaging } from "firebase/messaging";
+import { sendNotification } from '../firebaseRoutes.js';
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -22,6 +22,7 @@ const Dashboard = () => {
     const [isFull, setFull] = useState(false);
     const previousTrashLevelRef = useRef(null);
     const previousFullRef = useRef(false);
+    const [notifSent, setNotifSent] = useState(false);
 
     useEffect(() => {
         // Store isFull in localStorage
@@ -62,6 +63,9 @@ const Dashboard = () => {
                     setFull(true);
                     if (userInfo.name === person) {
                         setWarningMessage("Trash is Full! It's your turn to take out the trash!");
+                        if (!notifSent)
+                            sendNotification(userInfo.fcmToken, "♻️♻️TRASH TIME♻️♻️", `Hi ${person}, it's your turn to take out the trash!`)
+                            setNotifSent(true)
                     } else {
                         setWarningMessage(`Trash is Full! It's ${person}'s turn to take out the trash!`);
                     }
@@ -123,6 +127,7 @@ const Dashboard = () => {
         // An error happened.
         });
     }
+    
 
     const handleViewHouseholdMembers=() => {
         if(userInfo && userInfo.household){
@@ -145,6 +150,7 @@ const Dashboard = () => {
             if (trashLevel > previousTrashLevelRef.current) {
                 setValueAtPath(`/households/${houseCode}/currTrashIndex`, (trashIndex + 1) % houseInfo.numberOfPeople);
                 setTrashIndex((prevIndex) => (prevIndex + 1) % houseInfo.numberOfPeople);
+                setNotifSent(false);
             }
         }
     }, [previousFullRef, trashLevel, trashWeight]);
@@ -169,7 +175,7 @@ const Dashboard = () => {
                             <TrashVisualizer trashLevel={trashLevel} trashWeight={trashWeight} />
                         </>
                     )}
-                    {warningMessage && <div className="syne-body mt-8">{warningMessage}</div>}
+                    {warningMessage && <div className="syne-body mt-8 w-full text-center mx-auto max-w-[80%]">{warningMessage}</div>}
                 </div>
                 
             </div>
