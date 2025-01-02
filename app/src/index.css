@@ -70,6 +70,7 @@
     color: #284E13;
     font-weight: bold;
     font-size: 1.25rem;
+    text-align: center;        /* Center the text horizontally */
 }
 /* Form container */
 .login-form-container{
