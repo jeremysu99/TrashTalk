@@ -21,9 +21,9 @@ function App() {
   useEffect(() => {
     generateToken();
     onMessage(messaging, (payload) => {
-      console.log(payload)
-    })
-  }, [])
+      console.log(payload);
+    });
+  }, []);
 
   useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -42,6 +42,7 @@ function App() {
         
     );
   }
+
   return (
     <Router>
       <div>                
