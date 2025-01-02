@@ -6,7 +6,6 @@ import { onAuthStateChanged } from "firebase/auth";
 import HouseholdStatus from "./pages/HouseholdStatus";
 import CreateHousehold from "./pages/CreateHousehold";
 import JoinHousehold from "./pages/JoinHousehold";
-
 import ViewHousehold from "./pages/ViewHousehold";
 import { auth, generateToken, messaging } from "./firebase";
 import { onMessage, getMessaging } from "firebase/messaging"
@@ -18,6 +17,11 @@ function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   
+  
+
+// Firebase messaging initialization
+const messaging = getMessaging();
+
   useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
           setUser(currentUser);
