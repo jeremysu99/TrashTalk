@@ -1,11 +1,8 @@
-// JoinHousehold.js
 import React, { useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { auth, database } from "../firebase";
-import { ref, get, child } from "firebase/database";
 import { joinHousehold, fetchDataOnce } from "../firebaseRoutes";
-import leaf1 from './images/leaf1.png'
-import leaf2 from './images/leaf2.png'
+import leaf1 from './images/leaf1.png';
+import leaf2 from './images/leaf2.png';
 
 const JoinHousehold = () => {
   const navigate = useNavigate();
@@ -15,41 +12,44 @@ const JoinHousehold = () => {
   const [inviteCode, setInviteCode] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
 
-  const join = async (e) => {
-    try{
-      const { userID } = location.state || {};
-      const name = await fetchDataOnce(`/users/${userID}/name`)
-      await joinHousehold(userID, inviteCode, name)
+  const join = async () => {
+    try {
+      const name = await fetchDataOnce(`/users/${userID}/name`);
+      await joinHousehold(userID, inviteCode, name);
       navigate("/dashboard", { state: { userID: userID } });
-    }catch(error){
+    } catch (error) {
       console.error("Error joining house:", error.code, error.message);
       setStatusMessage(error.message);
     }
   };
+
   const navBack = () => {
-    navigate("/household", { state: { userID: userID }});
-  }
+    navigate("/household", { state: { userID: userID } });
+  };
+
   return (
     <main>
-      <img src={leaf1} alt="leaf1" className="top-left-image"/>
-      <img src={leaf2} alt="leaf1" className="bottom-right-image"/>
-    <div className="flex justify-center items-center h-screen w-full">
-      <h2 className>Join Household </h2>
-      <input
-        type="text"
-        placeholder=" Enter invite code"
-        value={inviteCode}
-        onChange={(e) => setInviteCode(e.target.value)}
-        className="p-2 text-sm w-0.5/5 max-w-md border-2 border-gray-500 rounded-md"
-      />
-      <button onClick={join} className="join-btn">
-        Join
-      </button>
-      <button onClick={navBack}>
-        Go Back
-      </button>
-      {statusMessage && <p>{statusMessage}</p>}
-    </div>
+      <img src={leaf1} alt="leaf1" className="top-left-image" />
+      <img src={leaf2} alt="leaf2" className="bottom-right-image" />
+      <div className="create-household-container">
+        <h1 className="syne-title">Join Household</h1>
+        <input
+          type="text"
+          placeholder="Enter invite code"
+          value={inviteCode}
+          onChange={(e) => setInviteCode(e.target.value)}
+          className="household-input"
+        />
+        <div className="button-row-centered">
+          <button onClick={join} className="login-button">
+            Join
+          </button>
+          <button onClick={navBack} className="login-button">
+            Go Back
+          </button>
+        </div>
+        {statusMessage && <p className="error-message">{statusMessage}</p>}
+      </div>
     </main>
   );
 };
