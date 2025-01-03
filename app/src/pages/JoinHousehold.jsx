@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { joinHousehold, fetchDataOnce } from "../firebaseRoutes";
 import leaf1 from './images/leaf1.png';
 import leaf2 from './images/leaf2.png';
+import back from './images/back.png'
 
 const JoinHousehold = () => {
   const navigate = useNavigate();
@@ -29,6 +30,12 @@ const JoinHousehold = () => {
 
   return (
     <main>
+      <button
+        className="absolute top-4 left-4 flex items-center text-gray-700 hover:text-gray-900 z-10"
+        onClick={() => navBack()} // Navigates to the previous page
+      >
+        <img src={back} className="h-6 w-6 mr-2" />
+      </button>
       <img src={leaf1} alt="leaf1" className="top-left-image" />
       <img src={leaf2} alt="leaf2" className="bottom-right-image" />
       <div className="create-household-container">

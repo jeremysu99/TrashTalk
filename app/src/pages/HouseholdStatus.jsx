@@ -6,6 +6,7 @@ import { fetchDataOnce } from "../firebaseRoutes";
 import logo from './images/logo.png'
 import leaf1 from './images/leaf1.png'
 import leaf2 from './images/leaf2.png'
+import back from './images/back.png'
 import '../index.css';
 
 const HouseholdStatus = () => {
@@ -34,16 +35,30 @@ const HouseholdStatus = () => {
   }, [userID]);
 
   if (!userID) {
-    return <p>No userID available.</p>;
+    return <div className="login-container">
+          <p className="text-xl font-semibold">No User ID found</p>
+        </div>
   }
 
   if (!userInfo) {
-    return <p>Loading user info...</p>; // Render a loading state while data is fetched
+    return <div className="login-container">
+          <p className="text-xl font-semibold">Loading...</p>
+        </div>
   }
 
+  const navBack = () => {
+    localStorage.removeItem('user');
+    navigate("/login", { state: { userID: userID } });
+  };
 
   return (
     <main className="create-household-container">
+      <button
+        className="absolute top-4 left-4 flex items-center text-gray-700 hover:text-gray-900 z-10"
+        onClick={() => navBack()} // Navigates to the previous page
+      >
+        <img src={back} className="h-6 w-6 mr-2" />
+      </button>
       <img src={leaf1} alt="leaf1" className="top-left-image"/>
       <img src={leaf2} alt="leaf1" className="bottom-right-image"/>
       <div className="div-container">
