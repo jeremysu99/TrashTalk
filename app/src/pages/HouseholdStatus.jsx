@@ -43,20 +43,21 @@ const HouseholdStatus = () => {
 
 
   return (
-    <main>
+    <main className="create-household-container">
       <img src={leaf1} alt="leaf1" className="top-left-image"/>
       <img src={leaf2} alt="leaf1" className="bottom-right-image"/>
       <div className="div-container">
         {userInfo ? (
-          <div>
-            <h1>Hi {userInfo.name}! It seems you are not in a Household yet. Please either Create or Join a Household</h1> 
+          <div className="syne-trash">
+            <h1>Hi {userInfo.name}! Please either Join or Create a Household.</h1> 
           </div>
           ) : (
-          <p>Loading user information...</p>
+          <p className="message">Loading user information...</p>
           )}
+          <div className="mt-12">
           <button className="login-button" onClick={() => navigate("/create", { state: { userID: userID }})}>Create Household</button>
-          <button className="login-button" onClick={() => navigate("/join", { state: { userID: userID }})}>Join Household</button>
-        
+          <button className="login-button ml-6" onClick={() => navigate("/join", { state: { userID: userID }})}>Join Household</button>
+          </div>
       </div>
     </main>
   );
