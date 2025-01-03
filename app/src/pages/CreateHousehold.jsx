@@ -32,7 +32,7 @@ const CreateHousehold = () => {
   };
 
   return (
-    <main>
+    <main className="create-household-container">
       <img src={leaf1} alt="leaf1" className="top-left-image" />
       <img src={leaf2} alt="leaf2" className="bottom-right-image" />
       <div className="div-container">
@@ -46,7 +46,7 @@ const CreateHousehold = () => {
         />
         <div className="button-row-centered">
           <button className="login-button" onClick={generateInviteCode}>
-            Generate Invite Code
+            Create House
           </button>
           <button className="login-button" onClick={navBack}>
             Go Back
