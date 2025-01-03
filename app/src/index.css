@@ -201,3 +201,87 @@
 .footer-button:hover {
     background-color: #DBEAD5; /* Hover effect (light green background) */
 }
+
+.button-row-centered {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Space between the buttons */
+  margin-top: 20px; /* Add spacing above the buttons */
+}
+
+
+/* Position title all the way up */
+.title-at-top {
+  position: absolute;
+  top: 240px; /* Adjust distance from the top */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 28px; /* Adjust title size if needed */
+  font-weight: bold;
+  text-align: center;
+  z-index: 1;
+}
+
+
+.household-input {
+  width: 100%; /* Ensures responsiveness */
+  max-width: 400px; /* Limits the maximum width */
+  margin: 0 auto; /* Centers the input */
+  padding: 10px; /* Adds some padding for better usability */
+  border: 2px solid #ccc; /* Matches the focused rectangle styling */
+  border-radius: 5px; /* Slightly rounded corners */
+  font-size: 16px; /* Adjust text size */
+  outline: none; /* Removes default outline */
+}
+
+.household-input:focus {
+  border-color: #0066cc; /* Adds a color to highlight focus */
+}
+
+
+.household-input.always-show-focus {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2); /* Visible from start */
+  border-color: #888; /* Slightly darker border for emphasis */
+}
+
+.create-household-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.household-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.login-button {
+  background-color: #284E13;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: #2f6c19;
+}
+
+.error-message {
+  color: red;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
