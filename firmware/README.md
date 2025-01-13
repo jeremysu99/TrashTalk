@@ -16,6 +16,8 @@ https://www.youtube.com/watch?v=LIuf2egMioA&t=354s&pp=ygUQbG9hZCBjZWxscyBoeDcxMQ
 
 - Change house code to current house code within `arduinoSketch.ino` file
 
+- Change WiFi name and passcode (leave as empty string if none) within the `arduinoSketch.ino` file
+
 - Use Arduino IDE to upload microcontroller code to Arduino
 
 - Mount components onto trashcan
