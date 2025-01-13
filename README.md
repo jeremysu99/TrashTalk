@@ -1,5 +1,22 @@
 # TrashTalk
 
+## Images and Demo
+- [Link to YouTube Demo](https://youtu.be/QXoKqhBXq0M)
+
+<img width="177" alt="image" src="https://github.com/user-attachments/assets/48120ae2-a1d5-471d-9f4a-0f1b32765978" />
+
+<img width="177" alt="image" src="https://github.com/user-attachments/assets/a8507f01-7440-49ac-af9c-3d68b96ea978" />
+
+<img width="177" alt="image" src="https://github.com/user-attachments/assets/81cd7bc7-4a43-4985-ada6-3a0ba07f51b1" />
+
+<img width="177" alt="image" src="https://github.com/user-attachments/assets/234579e1-1392-4021-be8a-c0e6a432e2a0" />
+
+<img width="177" alt="image" src="https://github.com/user-attachments/assets/7758d80c-7f11-4589-a626-1a4d69fdff00" />
+
+<img width="177" alt="image" src="https://github.com/user-attachments/assets/df3ebcdd-0dfc-458d-83d4-7a98e7c6e291" />
+
+<img width="177" alt="image" src="https://github.com/user-attachments/assets/6a46bc95-00c8-43e5-bd15-e1f3c5d250b4" />
+
 ## Overview
 - Progressive Web App (PWA) aimed to streamline communication between housemates over trash disposal
 
@@ -27,6 +44,8 @@
 - Tailwind CSS
 
 ## Setup instructions
+- clone the repository for project setup
+  
 - Visit `https://trashtalk-453d2.web.app`
   
 - Add page to home screen and enjoy!
