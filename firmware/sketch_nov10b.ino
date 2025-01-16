@@ -45,6 +45,8 @@ void setup() {
   LoadCell.begin();
   float calibrationValue; // calibration value (see example file "Calibration.ino")
   calibrationValue = 696.0; // uncomment this if you want to set the calibration value in the sketch
+  totalWeight = 0;
+  totalDistance = 0;
   #if defined(ESP8266)|| defined(ESP32)
     //EEPROM.begin(512); // uncomment this if you use ESP8266/ESP32 and want to fetch the calibration value from eeprom
   #endif
@@ -83,7 +85,10 @@ void setup() {
 }
 
 void loop() {
-  // update weight sensors
+  /*
+   First we deal with the weight sensors. Read in the value from the load cells to get the new data
+   and keep a running average of 20 seconds. Also input a 't' to tare the operation.
+   */
   static boolean newDataReady = 0;
   const int serialPrintInterval = 100; //increase value to slow down serial print activity
 
@@ -92,25 +97,29 @@ void loop() {
 
   // get smoothed value from the dataset:
   if (newDataReady) {
-    if (millis() > t + serialPrintInterval) {
-      float i = LoadCell.getData();
-      t = millis();
-      float averageWeight = totalWeight / weightCounts;
-      if (t > lastWeightTime + 20000) {
-        fb.setFloat("households/98WD71/weight", averageWeight);
-        totalWeight = 0;
-        weightCounts = 1;
-        Serial.println("Updated weight");
-        lastWeightTime = t;
-      }
-      else{
-        totalWeight += i;
-        weightCounts += 1;
-      }
-      Serial.print("Average weight: ");
-      Serial.println(totalWeight / weightCounts);
-      newDataReady = 0;
+    float i = LoadCell.getData() / 3;
+    t = millis();
+    float averageWeight = totalWeight / weightCounts;
+    // Round averageWeight to the tenths place
+    averageWeight = round(averageWeight * 10) / 10.0;
+    if (averageWeight < 0){
+      averageWeight *= -1;
     }
+    // Every 20 seconds update the average weight
+    if (t > lastWeightTime + 15000) {
+      fb.setFloat("households/98WD71/trashWeight", averageWeight);
+      totalWeight = 0;
+      weightCounts = 1;
+      Serial.println("Updated weight - new cycle starting");
+      lastWeightTime = t;
+    }
+    else{
+      totalWeight += i;
+      weightCounts += 1;
+    }
+    Serial.print("Average weight: ");
+    Serial.println(averageWeight);
+    newDataReady = 0;
   }
 
   // receive command from serial terminal, send 't' to initiate tare operation:
@@ -123,8 +132,11 @@ void loop() {
   if (LoadCell.getTareStatus() == true) {
     Serial.println("Tare complete");
   }
-
-  // update ultrasonic sensor
+  /*
+   Now we deal with the ultrasonic sensor. Acquire the data read from the sensor and, like
+   with weight, keep a 20 second running average to update the database with.
+   */
+  // Read in data from trigpin
   digitalWrite(TRIGPIN, LOW);
   delayMicroseconds(20);
 
@@ -133,46 +145,27 @@ void loop() {
 
   digitalWrite(TRIGPIN, LOW);
 
-  // Calculate distance between sensor and surface
+  // Calculate distance (mm) between sensor and surface with speed of sound
   duration = pulseIn(ECHOPIN, HIGH);
-
   distance = (duration / 2) * 0.343;
-  float averageDistance = totalDistance / distanceCounts;
-
-  if (isEmpty){
-    if (averageDistance < 300 && millis() - lastDistanceTime > 20000){
-      currIndex = fb.getInt("households/98WD71/currTrashIndex");
-      roomCount = fb.getInt("households/98WD71/numberOfPeople");
-      fb.setFloat("households/98WD71/trashLevel", averageDistance);
-      totalDistance = 0;
-      distance = 1;
-      isEmpty = false;
-      Serial.println("Trash full. Please take out the trash.");
-    }
-    else{
-      totalDistance += distance;
-      distanceCounts += 1;
-      lastDistanceTime = millis();
-    }
+  if (distance > 1000){
+    distance = 1000;
+  }
+  int averageDistance = totalDistance / distanceCounts;
+  if (millis() > lastDistanceTime + 15000){
+    currIndex = fb.getInt("households/98WD71/currTrashIndex");
+    fb.setInt("households/98WD71/trashLevel", averageDistance);
+    Serial.println("Updated distance - new cycle starting");
+    totalDistance = distance;
+    distanceCounts = 1;
+    lastDistanceTime = millis();
   }
   else{
-    if (averageDistance > 700 && millis() - lastDistanceTime > 20000){
-      // Change person whose turn it is
-      fb.setInt("households/98WD71/currTrashIndex", (currIndex + 1) % roomCount);
-      totalDistance = 0;
-      distance = 1;
-      isEmpty = false;
-      isEmpty = true;
-      Serial.println("Trash emptied. Now moving trash duty.");
-    }
-    else{
-      totalDistance += distance;
-      distanceCounts += 1;
-      lastDistanceTime = millis();
-    }
+    totalDistance += distance;
+    distanceCounts += 1;
   }
   Serial.println("Average Distance: ");
-  Serial.print(totalDistance / distanceCounts);
+  Serial.print(averageDistance);
   Serial.println(" mm");
-  delay(1000);
+  delay(100);
 }
