@@ -33,7 +33,7 @@
 ## Technologies Used
 - Arduino IDE
 
-- Firebase (Realtime Database, Authentication, Hosting)
+- Firebase (Realtime Database, Authentication, Hosting, Cloud Functions)
 
 - Express.js
 
@@ -45,6 +45,8 @@
 
 ## Setup instructions
 - clone the repository for project setup
+
+- run `npm install` in `/app` directory to install necessary dependencies
   
 - Visit `https://trashtalk-453d2.web.app`
   
