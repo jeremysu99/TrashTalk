@@ -17,22 +17,20 @@ function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   
-  
-
 // Firebase messaging initialization
 const messaging = getMessaging();
 
   useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
           setUser(currentUser);
-          setIsLoading(false);
+          setIsLoading(false);                                             
           if (currentUser) {
             const userID = currentUser.uid;
     
             try {
               const token = await generateToken(); // Wait for the token to be generated
               if (token) {
-                await setValueAtPath(`/users/${userID}/fcmToken`, token); // Save token to the database
+                await setValueAtPath(`/users/${userID}/fcmToken`, token); // Save token to the database 
               }
             } catch (error) {
               console.error("Error generating or saving token:", error);

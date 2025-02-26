@@ -13,6 +13,7 @@
   top: 5%; /* Move it slightly down from the top */
   transform: translateY(-2.5%);
 }
+
 .login-container {
   background-color: #DBEAD5;
   display: flex;

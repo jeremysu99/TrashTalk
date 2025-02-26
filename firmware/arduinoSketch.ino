@@ -43,8 +43,8 @@ void setup() {
 
   Serial.begin(57600);
   LoadCell.begin();
-  float calibrationValue; // calibration value (see example file "Calibration.ino")
-  calibrationValue = 696.0; // uncomment this if you want to set the calibration value in the sketch
+  float calibrationValue; // calibration value 
+  calibrationValue = 696.0; // uncomment this if you want to set the calibration value
   totalWeight = 0;
   totalDistance = 0;
   #if defined(ESP8266)|| defined(ESP32)
@@ -52,7 +52,7 @@ void setup() {
   #endif
     //EEPROM.get(calVal_eepromAdress, calibrationValue); // uncomment this if you want to fetch the calibration value from eeprom
 
-  unsigned long stabilizingtime = 2000; // preciscion right after power-up can be improved by adding a few seconds of stabilizing time
+  unsigned long stabilizingtime = 2000; // adding a few seconds of stabilizing time
   boolean _tare = true; //set this to false if you don't want tare to be performed in the next step
   LoadCell.start(stabilizingtime, _tare);
   if (LoadCell.getTareTimeoutFlag()) {
@@ -105,7 +105,7 @@ void loop() {
     if (averageWeight < 0){
       averageWeight *= -1;
     }
-    // Every 20 seconds update the average weight
+    // Every 15 seconds update the average weight
     if (t > lastWeightTime + 15000) {
       fb.setFloat("households/98WD71/trashWeight", averageWeight);
       totalWeight = 0;
@@ -134,7 +134,7 @@ void loop() {
   }
   /*
    Now we deal with the ultrasonic sensor. Acquire the data read from the sensor and, like
-   with weight, keep a 20 second running average to update the database with.
+   with weight, keep a 15 second running average to update the database with.
    */
   // Read in data from trigpin
   digitalWrite(TRIGPIN, LOW);
