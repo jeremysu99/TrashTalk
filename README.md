@@ -35,11 +35,7 @@
 
 - Firebase (Realtime Database, Authentication, Hosting, Cloud Functions)
 
-- Express.js
-
 - React
-
-- Node.js
 
 - Tailwind CSS
 
