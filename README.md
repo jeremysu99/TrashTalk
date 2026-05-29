@@ -1,8 +1,6 @@
 # TrashTalk
 
-## Images and Demo
-- [Link to YouTube Demo](https://youtu.be/QXoKqhBXq0M)
-
+## Images 
 <img width="177" alt="image" src="https://github.com/user-attachments/assets/48120ae2-a1d5-471d-9f4a-0f1b32765978" />
 
 <img width="177" alt="image" src="https://github.com/user-attachments/assets/a8507f01-7440-49ac-af9c-3d68b96ea978" />
